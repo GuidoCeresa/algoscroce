@@ -80,6 +80,7 @@ class MiliteController {
                 params: params)
     } // fine del metodo
 
+
     def list(Integer max) {
         def lista
         Croce croce = croceService.getCroce(request)

@@ -14,14 +14,14 @@
 /* MODIFICHE GAC */
 /* modificato per allargare al massimo */
 body {
-    margin: 0 2em 0 2em;
+    margin: 0 auto;
     max-width: 1960px;
 }
 
 /* modificato per evitare la sottolineatura */
 /* modificato per avere il bold */
 a:link, a:visited, a:hover {
-    color: #48802c;
+    color: #4444dd;
     text-decoration: none;
     font-weight: bold;
 }
@@ -36,6 +36,16 @@ a:link, a:visited, a:hover {
 
 #grailsLogo a {
     margin: 0.1em 0 0 0.5em;
+}
+
+.footer {
+    background: #ff0000;
+    color: #000;
+    clear: both;
+    font-size: 0.8em;
+    margin-top: 1.5em;
+    padding: 1em;
+    min-height: 1em;
 }
 
 .footer a {
@@ -96,6 +106,12 @@ a:link, a:visited, a:hover {
     background-image: url(../images/skin/car.png);
 }
 
+textarea {
+    width: 300px;
+    height: 100px;
+    overflow: auto; /* IE always renders vertical scrollbar without this */
+    vertical-align: top;
+}
 
 
 /* MESSAGES AND ERRORS */
@@ -106,12 +122,37 @@ a:link, a:visited, a:hover {
 
 
 /* TABLES */
+table {
+    margin-bottom: 0em;
+}
+
 thead th {
     background-color: #ff0000;
     white-space: nowrap;
     color: #444444;
 }
 
+th {
+    background-color: #ff0000;
+    background-image: -moz-linear-gradient(top, #ffffff, #eaeaea);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(1, #eaeaea));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr = '#ffffff', EndColorStr = '#eaeaea');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#eaeaea')";
+    color: #444444;
+    font-weight: bold;
+    line-height: 1.7em;
+    padding: 0.2em 0.6em;
+}
+
+thead th {
+    background-color: #ff0000;
+    white-space: nowrap;
+    color: #444444;
+}
+
+th a:link, th a:visited {
+    color: #444444;
+}
 
 /* ACTION BUTTONS */
 .buttons .list {
@@ -393,15 +434,14 @@ table.amb {
 }
 
 td.copyright {
-    background: #339966;
+    /*background: #339966;*/
+    /*background: #ff4444;*/
+    background: red;
     color: #ffffff;
-    font-size: 0.6em;
+    font-size: 0.7em;
     font-weight: normal;
     vertical-align: middle;
-    /*    border-width: 2px 0 0 0;*/
     padding: 2px;
-    /*border-style: solid;*/
-    /*border-color: blue;*/
 }
 
 td.verde {

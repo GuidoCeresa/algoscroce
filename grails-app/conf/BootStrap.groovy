@@ -1,5 +1,7 @@
 import webambulanze.*
 
+import java.sql.Timestamp
+
 /* Created by Algos s.r.l. */
 /* Date: mag 2012 */
 /* Questo file è stato installato dal plugin AlgosBase */
@@ -412,6 +414,51 @@ class BootStrap implements Cost {
         //--aggiornamento password per cambio versione plugin Security
         if (installaVersione(70)) {
             aggiornamentoPassword()
+        }// fine del blocco if
+
+        //--cancellazione del milite 'Steccani' (due volte) a PonteTaro
+        if (installaVersione(71)) {
+            cancellaMiliteSteccani()
+        }// fine del blocco if
+
+        //--modifica descrizione turno a PonteTaro
+        if (installaVersione(72)) {
+            modificaDescrizioneTurnoPontetaro()
+        }// fine del blocco if
+
+        //--modifica flag blocco a PonteTaro
+        if (installaVersione(73)) {
+            modificaFlagBloccoPontetaro()
+        }// fine del blocco if
+
+        //--cancellazione logs 2012 e 2013
+        if (installaVersione(74)) {
+            cancellaOldLogs()
+        }// fine del blocco if
+
+        //--azzeramento turni pontetaro
+        if (installaVersione(75)) {
+            cancellaOldTurniPontetaro()
+        }// fine del blocco if
+
+        //--abilitato flag ripetizione turni pontetaro
+        if (installaVersione(76)) {
+            flagRipetizionePontetaro()
+        }// fine del blocco if
+
+        //--modifica tipologia turni pontetaro
+        if (installaVersione(77)) {
+            modificaTipologiaTurniPontetaro()
+        }// fine del blocco if
+
+        //--modifica tipologia turni pontetaro
+        if (installaVersione(78)) {
+            modificaDialisiPontetaro()
+        }// fine del blocco if
+
+        //--modifica tipologia turni pontetaro
+        if (installaVersione(79)) {
+            modificaOrdinarioPontetaro()
         }// fine del blocco if
 
         // resetTurniPontetaro()
@@ -4820,9 +4867,240 @@ class BootStrap implements Cost {
         newVersione(CROCE_ALGOS, 'Security', 'Aggiornamento password per cambio versione plugin Security')
     }// fine del metodo
 
+    //--cancellazione del milite 'Steccani' (due volte) a PonteTaro
+    private static void cancellaMiliteSteccani() {
+        Croce croce
+        Milite milite
+
+        croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        if (croce) {
+            milite = Milite.findById(466)
+            if (milite) {
+                MiliteService.cancellaMilite(milite)
+            }// fine del blocco if
+            milite = Milite.findById(467)
+            if (milite) {
+                MiliteService.cancellaMilite(milite)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Milite', 'Cancellato Stecconi Annalisa')
+    }// fine del metodo
+
+    //--modifica descrizione turno a PonteTaro
+    private static void modificaDescrizioneTurnoPontetaro() {
+        Croce croce
+        TipoTurno turno
+
+        croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        if (croce) {
+            turno = TipoTurno.findByCroceAndDescrizione(croce, 'Extra ambulanza')
+            if (turno) {
+                turno.descrizione = 'disponibilità extra'
+                turno.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Modificata label extra')
+    }// fine del metodo
+
+    //--modifica flag blocco a PonteTaro
+    private static void modificaFlagBloccoPontetaro() {
+        Croce croce
+        Settings pref
+
+        croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        if (croce) {
+            pref = croce.settings
+            if (pref) {
+                pref.isDisabilitazioneAutomaticaLogin = true
+                pref.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Settings', 'Disabilitazione automatica login attivo')
+    }// fine del metodo
+
+    //--cancellazione logs 2012 e 2013
+    private static void cancellaOldLogs() {
+        def logs
+        Date primoGennaio = Lib.creaData1Gennaio()
+        Timestamp timeGennaio2014 = new Timestamp(primoGennaio.time)
+
+        logs = Logo.findAllByTimeLessThan(timeGennaio2014)
+        if (logs) {
+            logs?.each {
+                it.delete()
+            } // fine del ciclo each
+        }// fine del blocco if
+
+        newVersione(CROCE_ALGOS, 'Logs', 'Cancellati anni 2012 e 2013')
+    }// fine del metodo
+
+    //--azzeramento turni pontetaro
+    private static void cancellaOldTurniPontetaro() {
+        def lista
+        Croce croceCRPT = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        Date giornoLimite = new Date(2013 - 1900, 6 - 1, 30)
+
+        lista = Militeturno.findAllByCroceAndGiornoLessThanEquals(croceCRPT, giornoLimite)
+        lista?.each {
+            it.delete(flush: true)
+        } // fine del ciclo each
+
+        lista = Turno.findAllByCroceAndGiornoLessThanEquals(croceCRPT, giornoLimite)
+        lista?.each {
+            it.delete(flush: true)
+        } // fine del ciclo each
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Azzerati (cancellati) i turni precedenti al 30 giugno 2013')
+    }// fine del metodo
+
+    //--abilitato flag ripetizione turni pontetaro
+    private static void flagRipetizionePontetaro() {
+        Croce croce
+        Settings pref
+
+        croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        if (croce) {
+            pref = croce.settings
+            if (pref) {
+                pref.isTurnoSettimanale = true
+                pref.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Abilitato flag ripetizione (già esistente)')
+    }// fine del metodo
+
+    //--modifica tipologia turni pontetaro
+    //--soppresso turno extra ambulanze (generico e multiplo)
+    //--slittamento dell'ordine di presentazione
+    //--creazione di 3 turni extra specifici
+    private static void modificaTipologiaTurniPontetaro() {
+        Croce croce
+        int delta = 3
+        TipoTurno turno
+        TipoTurno newTurno
+        def lista
+
+        croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        if (croce) {
+
+            //--soppresso turno extra ambulanze (generico e multiplo)
+            turno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_EXTRA)
+            if (turno) {
+                turno.visibile = true
+                turno.ordine = 12
+                turno.save(flush: true)
+            }// fine del blocco if
+
+            //--slittamento dell'ordine di presentazione
+            lista = TipoTurno.findAllByCroce(croce, [sort: 'ordine'])
+            lista?.each {
+                turno = it
+                if (turno.ordine > 3) {
+                    turno.ordine = turno.ordine + 2
+                    turno.save(flush: true)
+                }// fine del blocco if
+            } // fine del ciclo each
+
+            //--creazione di 3 turni extra specifici
+            copiaTipoTurno(croce, CRPT_TIPO_TURNO_AMBULANZA_MATTINO, CRPT_TIPO_TURNO_EXTRA_MATTINO, 4)
+            copiaTipoTurno(croce, CRPT_TIPO_TURNO_AMBULANZA_POMERIGGIO, CRPT_TIPO_TURNO_EXTRA_POMERIGGIO, 5)
+            copiaTipoTurno(croce, CRPT_TIPO_TURNO_AMBULANZA_NOTTE, CRPT_TIPO_TURNO_EXTRA_NOTTE, 6)
+
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Soppresso extra multiplo, aggiunti 3 extra specifici singoli')
+    }// fine del metodo
+
+    private static copiaTipoTurno(Croce croce, String oldSigla, String newSigla, int ordine) {
+        TipoTurno newTurno = null
+        TipoTurno turno
+        String addDescrizione = 'Disponibilità extra '
+        String newDesc
+
+        turno = TipoTurno.findByCroceAndSigla(croce, oldSigla)
+        if (turno) {
+            newTurno = new TipoTurno()
+            newTurno.croce = turno.croce
+            newTurno.sigla = newSigla
+
+            newDesc = turno.descrizione
+            newDesc = newDesc.substring(newDesc.lastIndexOf(' ')).trim()
+            newDesc = addDescrizione + newDesc
+            newTurno.descrizione = newDesc
+            newTurno.ordine = ordine
+            newTurno.durata = turno.durata
+            newTurno.oraInizio = turno.oraInizio
+            newTurno.minutiInizio = turno.minutiInizio
+            newTurno.oraFine = turno.oraFine
+            newTurno.minutiFine = turno.minutiFine
+            newTurno.primo = turno.primo
+            newTurno.fineGiornoSuccessivo = turno.fineGiornoSuccessivo
+            newTurno.visibile = turno.visibile
+            newTurno.orario = turno.orario
+            newTurno.multiplo = turno.multiplo
+            newTurno.funzioniObbligatorie = turno.funzioniObbligatorie
+            newTurno.funzione1 = turno.funzione1
+            newTurno.funzione2 = turno.funzione2
+            newTurno.funzione3 = turno.funzione3
+            newTurno.funzione4 = turno.funzione4
+            newTurno.save(flush: true)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--modifica tipologia turni pontetaro
+    private static void modificaDialisiPontetaro() {
+        Croce croce
+        TipoTurno turno
+
+        croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        if (croce) {
+            turno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_UNO_ANDATA)
+            if (turno) {
+                turno.funzione2 = null
+                turno.save(flush: true)
+            }// fine del blocco if
+            turno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_UNO_RITORNO)
+            if (turno) {
+                turno.funzione2 = null
+                turno.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Soppressa funzione soccorritore in dialisi 1 (andata e ritorno)')
+    }// fine del metodo
+
+    //--modifica tipologia turni pontetaro
+    //--ordinario singolo levare soccorritore
+    //--ordinario singolo diventa multiplo
+    //--ordinario doppio diventa multiplo
+    private static void modificaOrdinarioPontetaro() {
+        Croce croce
+        TipoTurno turno
+
+        croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        if (croce) {
+            turno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_SINGOLO)
+            if (turno) {
+                turno.funzione2 = null
+                turno.multiplo=true
+                turno.save(flush: true)
+            }// fine del blocco if
+            turno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_DOPPIO)
+            if (turno) {
+                turno.multiplo=true
+                turno.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Soppressa funzione soccorritore in ordinario singolo. Ordinari multipli')
+    }// fine del metodo
 
     def destroy = {
-    }// fine della closure
+    }// fine della closur
 
 }// fine della classe
 

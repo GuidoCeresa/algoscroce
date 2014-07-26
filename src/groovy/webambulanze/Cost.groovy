@@ -138,6 +138,9 @@ public interface Cost {
     public static String CRPT_TIPO_TURNO_ORDINARIO_DOPPIO = 'ord-due'
     public static String CRPT_TIPO_TURNO_EXTRA = 'extra'
     public static String CRPT_TIPO_TURNO_SERVIZI = 'servizi'
+    public static String CRPT_TIPO_TURNO_EXTRA_MATTINO = 'extra-118-mat'
+    public static String CRPT_TIPO_TURNO_EXTRA_POMERIGGIO = 'extra-118-pom'
+    public static String CRPT_TIPO_TURNO_EXTRA_NOTTE = 'extra-118-notte'
 
     //--funzioni nella croce demo
     public static String DEMO_FUNZIONE_AUT = 'aut'

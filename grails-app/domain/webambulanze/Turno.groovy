@@ -108,6 +108,11 @@ class Turno {
     String toString() {
 //        return tipoTurno.sigla + '/' + Lib.presentaDataNum(giorno)
 //        return tipoTurno.descrizione + ' - ' + Lib.presentaDataCompleta(giorno)
+        def a = giorno
+        def b = Lib.presentaDataCompleta(giorno)
+        def c = tipoTurno
+        def d=tipoTurno.descrizione
+        def stop
         return Lib.presentaDataCompleta(giorno) + ' - ' + tipoTurno.descrizione
     } // end of toString
 
