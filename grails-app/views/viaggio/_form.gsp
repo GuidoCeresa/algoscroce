@@ -174,6 +174,24 @@
     <g:field name="chilometriPercorsi" type="number" value="${viaggioInstance.chilometriPercorsi}" required=""/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'chilometriFattura', 'error')} required">
+    <label for="chilometriFattura">
+        <g:message code="viaggio.chilometriFattura.labelform" default="Chilometri Fatturazione" />
+        <span class="required-indicator">*</span>
+    </label>
+
+
+
+
+
+
+
+
+
+
+    <g:field name="chilometriFattura" type="number" value="${viaggioInstance.chilometriFattura}" required=""/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'cittaPaziente', 'error')} ">
     <label for="cittaPaziente">
         <g:message code="viaggio.cittaPaziente.labelform" default="Citta Paziente" />

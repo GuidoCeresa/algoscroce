@@ -55,6 +55,7 @@ class ViaggioController {
                 'giorno',
                 'automezzo',
                 'chilometriPercorsi',
+                'chilometriFattura',
                 'codiceInvio',
                 'codiceRicovero',
         ]

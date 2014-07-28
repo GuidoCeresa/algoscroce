@@ -51,6 +51,9 @@ class Viaggio {
     //--Calcolati
     int chilometriPercorsi = 0
 
+    //--Da fatturare
+    int chilometriFattura = 0
+
     Milite militeFunzione1
     Milite militeFunzione2
     Milite militeFunzione3
@@ -117,6 +120,10 @@ class Viaggio {
         if (chilometriPartenza && chilometriArrivo) {
             chilometriPercorsi = chilometriArrivo - chilometriPartenza
         }// fine del blocco if
+        if (!chilometriFattura) {
+            chilometriFattura = chilometriPercorsi
+        }// fine del blocco if
+
     } // fine del metodo
 
     /**

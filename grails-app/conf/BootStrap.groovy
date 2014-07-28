@@ -461,6 +461,11 @@ class BootStrap implements Cost {
             modificaOrdinarioPontetaro()
         }// fine del blocco if
 
+        //--aggiunta campo Viaggi
+        if (installaVersione(80)) {
+            addCampoViaggi()
+        }// fine del blocco if
+
         // resetTurniPontetaro()
 
         //--cancella tutto il database
@@ -5086,18 +5091,35 @@ class BootStrap implements Cost {
             turno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_SINGOLO)
             if (turno) {
                 turno.funzione2 = null
-                turno.multiplo=true
+                turno.multiplo = true
                 turno.save(flush: true)
             }// fine del blocco if
             turno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_DOPPIO)
             if (turno) {
-                turno.multiplo=true
+                turno.multiplo = true
                 turno.save(flush: true)
             }// fine del blocco if
         }// fine del blocco if
 
         newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Soppressa funzione soccorritore in ordinario singolo. Ordinari multipli')
     }// fine del metodo
+
+    //--aggiunta campo Viaggi
+    //--spazzola tutti viaggi esistenti per regolare il valore iniziale
+    private static void addCampoViaggi() {
+        def lista = Viaggio.list()
+        Viaggio viaggio
+
+        lista?.each {
+            viaggio = it
+            if (!viaggio.chilometriFattura) {
+                viaggio.chilometriFattura = viaggio.chilometriPercorsi
+                viaggio.save(flush: true)
+            }// fine del blocco if
+        } // fine del ciclo each
+
+    }// fine del metodo
+
 
     def destroy = {
     }// fine della closur

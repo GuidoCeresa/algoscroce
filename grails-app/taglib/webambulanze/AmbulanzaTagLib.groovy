@@ -1951,6 +1951,8 @@ class AmbulanzaTagLib {
         ArrayList listaAutomezzi
         int chilometriPartenza
         int chilometriArrivo
+        int chilometriPercorsi
+        int chilometriFattura
         CodiceInvio codiceInvio
         ArrayList listaInvio = CodiceInvio.getAll()
         LuogoEvento luogoEvento
@@ -1989,6 +1991,8 @@ class AmbulanzaTagLib {
         automezzo = viaggio.automezzo
         chilometriPartenza = viaggio.chilometriPartenza
         chilometriArrivo = viaggio.chilometriArrivo
+        chilometriPercorsi=viaggio.chilometriPercorsi
+        chilometriFattura=viaggio.chilometriFattura
         codiceInvio = viaggio.codiceInvio
         luogoEvento = viaggio.luogoEvento
         patologia = viaggio.patologia
@@ -2028,6 +2032,8 @@ class AmbulanzaTagLib {
         testoOut += LibHtml.fieldLista('Automezzo', 'automezzo', listaAutomezzi, automezzo.toString(), true)
         testoOut += LibHtml.field(Field.testoObbEdit, 'Chilometri alla partenza', chilometriPartenza, 'chilometriPartenza')
         testoOut += LibHtml.field(Field.testoObbEdit, "Chilometri all'arrivo", chilometriArrivo, 'chilometriArrivo')
+        testoOut += LibHtml.field(Field.testoEdit, 'Chilometri percorsi', chilometriPercorsi, 'chilometriPercorsi')
+        testoOut += LibHtml.field(Field.testoEdit, 'Chilometri da fatturare', chilometriFattura, 'chilometriFattura')
         testoOut += LibHtml.field(Field.oraMin, "Orario di chiamata", inizio, 'inizio')
         testoOut += LibHtml.fieldLista("Codice invio", 'codiceInvio', listaInvio, codiceInvio.toString(), true)
         testoOut += LibHtml.fieldLista("Luogo evento", 'luogoEvento', listaLuogo, luogoEvento.toString(), true)
