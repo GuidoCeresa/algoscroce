@@ -466,6 +466,26 @@ class BootStrap implements Cost {
             addCampoViaggi()
         }// fine del blocco if
 
+        //--creazione nuovi turni anno 2015 per Demo
+        if (installaVersione(81)) {
+            nuoviTurni2015Demo()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2015 per Pianoro
+        if (installaVersione(82)) {
+            nuoviTurni2015Pianoro()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2015 per Fidenza
+        if (installaVersione(83)) {
+            nuoviTurni2015Fidenza()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2015 per Pontetaro
+        if (installaVersione(84)) {
+            nuoviTurni2015Pontetaro()
+        }// fine del blocco if
+
         // resetTurniPontetaro()
 
         //--cancella tutto il database
@@ -5120,6 +5140,34 @@ class BootStrap implements Cost {
 
     }// fine del metodo
 
+
+    //--creazione nuovi turni anno 2015 per Demo
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2015Demo() {
+        nuoviTurniAnnualiDemo('2015')
+        newVersione(CROCE_DEMO, 'Turni', 'Creati turni vuoti 2015')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2015 per Pianoro
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2015Pianoro() {
+        nuoviTurniAnnualiPianoro('2015')
+        newVersione(CROCE_PUBBLICA_PIANORO, 'Turni', 'Creati turni vuoti 2015')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2015 per Fidenza
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2015Fidenza() {
+        nuoviTurniAnnualiFidenza('2015')
+        newVersione(CROCE_ROSSA_FIDENZA, 'Turni', 'Creati turni vuoti 2015')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2015 per Pontetaro
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2015Pontetaro() {
+        nuoviTurniAnnualiPontetaro('2015')
+        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Creati turni vuoti 2015')
+    }// fine del metodo
 
     def destroy = {
     }// fine della closur

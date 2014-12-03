@@ -1830,14 +1830,14 @@ class AmbulanzaTagLib {
         testoUno = formRadio(Cost.CAMPO_RIPETIZIONE_TURNO, 'Vuoi ripetere il turno settimanale?', false)
         testoUno = Lib.tag('td', testoUno, Aspetto.formlabelleft.toString(), 'col', 1)
         testoDue = formSelect(Cost.CAMPO_FREQUENZA_RIPETIZIONE, valori, 1)
-        testoDue += Lib.tagCella('per', Aspetto.formlabelleft)
+        testoDue += Lib.tagCella('aggiungendo altre', Aspetto.formlabelleft)
         inputTxt += "<input type=\"text\" name="
         inputTxt += label
         inputTxt += " value="
         inputTxt += numSuggerito
         inputTxt += " style=\"width: 30px\" id=\"${label}\"/>"
         testoDue += Lib.tagCella(inputTxt, Aspetto.formlabelleft)
-        testoDue += Lib.tagCella('volte', Aspetto.formlabelleft)
+        testoDue += Lib.tagCella('volte oltre questa', Aspetto.formlabelleft)
         testoDue = Lib.tag('td', testoDue, Aspetto.formeditleft.toString(), 'col', 1)
 
         testoOut += Lib.tagRiga(testoUno + testoDue)
