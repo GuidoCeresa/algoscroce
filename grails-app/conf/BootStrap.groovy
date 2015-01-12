@@ -491,6 +491,11 @@ class BootStrap implements Cost {
             newVersione(CROCE_ALGOS, '2015', 'Aggiornamento costante Cost.ANNI')
         }// fine del blocco if
 
+        //--aggiunto flag per creazione 'al volo' nuovi turni
+        if (installaVersione(86)) {
+            addFlagNuoviTurniImmediati()
+        }// fine del blocco if
+
         // resetTurniPontetaro()
 
         //--cancella tutto il database
@@ -5145,7 +5150,6 @@ class BootStrap implements Cost {
 
     }// fine del metodo
 
-
     //--creazione nuovi turni anno 2015 per Demo
     //--li crea SOLO se non esistono già
     private static void nuoviTurni2015Demo() {
@@ -5173,6 +5177,31 @@ class BootStrap implements Cost {
         nuoviTurniAnnualiPontetaro('2015')
         newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Creati turni vuoti 2015')
     }// fine del metodo
+
+    //--aggiunto flag per creazione 'al volo' nuovi turni
+    //--di default falso per tutte le croci
+    //--vero solo per la croce GAPS
+    private static void addFlagNuoviTurniImmediati() {
+        Croce croce
+        Settings pref
+        ArrayList<Croce> lista = Croce.list()
+
+        lista?.each {
+            croce = (Croce) it
+            pref = croce.settings
+            if (pref) {
+                if (croce.sigla.equals(GAPS_CASTELLO)) {
+                    pref.militePuoCreareTurnoImmediato = true
+                } else {
+                    pref.militePuoCreareTurnoImmediato = false
+                }// fine del blocco if-else
+                pref.save(flush: true)
+            }// fine del blocco if
+        } // fine del ciclo each
+
+        newVersione(CROCE_ALGOS, 'Settings', "Aggiunto flag per creare un nuovo turno all'ultimo minuto")
+    }// fine del metodo
+
 
     def destroy = {
     }// fine della closur

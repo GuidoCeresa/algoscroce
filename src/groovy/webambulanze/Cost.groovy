@@ -60,6 +60,7 @@ public interface Cost {
     public static String PREF_bloccaSoloFunzioniObbligatorie = 'bloccaSoloFunzioniObbligatorie'
     public static String PREF_militePuoCreareTurnoStandard = 'militePuoCreareTurnoStandard'
     public static String PREF_militePuoCreareTurnoExtra = 'militePuoCreareTurnoExtra'
+    public static String PREF_militePuoCreareTurnoImmediato = 'militePuoCreareTurnoImmediato'
     public static String PREF_isTurnoSettimanale = 'isTurnoSettimanale'
     public static String PREF_usaNomeCognome = 'usaNomeCognome'
     public static String PREF_usaListaMilitiViaggi = 'usaListaMilitiViaggi'

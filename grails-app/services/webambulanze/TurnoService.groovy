@@ -142,10 +142,12 @@ class TurnoService {
         boolean giornoBloccato = false
         boolean militePuoCreareTurnoStandard = false
         boolean militePuoCreareTurnoExtra = false
+        boolean militePuoCreareTurnoImmediato = false
 
         if (croce) {
             militePuoCreareTurnoStandard = croceService.militePuoCreareTurnoStandard(croce)
             militePuoCreareTurnoExtra = croceService.militePuoCreareTurnoExtra(croce)
+            militePuoCreareTurnoImmediato = croceService.militePuoCreareTurnoImmediato(croce)
         }// fine del blocco if
 
         //--nel giorno corrente i militi non possono mai creare nuovi turni standard
@@ -157,9 +159,15 @@ class TurnoService {
                 giornoBloccato = true
             }// fine del blocco if
         } else {
-            if (numGiornoNuovoTurno <= numGiornoCorrente) {
-                giornoBloccato = true
-            }// fine del blocco if
+            if (militePuoCreareTurnoImmediato) { // si può crerare un nuovo turno fino al giorno stesso
+                if (numGiornoNuovoTurno < numGiornoCorrente) {
+                    giornoBloccato = true
+                }// fine del blocco if
+            } else { // si può crerare un nuovo turno fino al giorno prima
+                if (numGiornoNuovoTurno <= numGiornoCorrente) {
+                    giornoBloccato = true
+                }// fine del blocco if
+            }// fine del blocco if-else
         }// fine del blocco if-else
 
         if (militeService?.isLoggatoAdminOrMore()) {

@@ -137,6 +137,9 @@ class Settings {
     //--flag per suggerire il kilometraggio in un nuovo viaggio incrementato di 1
     boolean suggerisceKilometroViaggio = false
 
+    //--flag per creazione 'al volo' nuovi turni
+    boolean militePuoCreareTurnoImmediato = false
+
     /**
      * regolazione delle proprietà di ogni campo
      * l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
@@ -176,6 +179,7 @@ class Settings {
         usaNomeCognome()
         usaListaMilitiViaggi()
         suggerisceKilometroViaggio()
+        militePuoCreareTurnoImmediato()
     } // end of static constraints
 
     /*+
