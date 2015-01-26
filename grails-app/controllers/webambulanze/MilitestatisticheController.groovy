@@ -155,6 +155,34 @@ class MilitestatisticheController {
         redirect(action: 'list', params: params)
     } // fine del metodo
 
+    def calcola2013() {
+        Croce croce = croceService.getCroce(request)
+        if (croce) {
+            militeturnoService.calcola(croce,Cost.ANNI[1])
+        }// fine del blocco if
+        utenteService.regolaAbilitazioni()
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def calcola2014() {
+        Croce croce = croceService.getCroce(request)
+        if (croce) {
+            militeturnoService.calcola(croce,Cost.ANNI[2])
+        }// fine del blocco if
+        utenteService.regolaAbilitazioni()
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def calcola2015() {
+        Croce croce = croceService.getCroce(request)
+        if (croce) {
+            militeturnoService.calcola(croce,Cost.ANNI[3])
+        }// fine del blocco if
+        utenteService.regolaAbilitazioni()
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+
     @Secured([Cost.ROLE_PROG])
     def create() {
         params.siglaCroce = croceService.getSiglaCroce(request)
