@@ -1635,4 +1635,24 @@ class Lib {
         return isPreFestivoAnno(giorno, Festivi.all(anno))
     } // fine del metodo statico
 
+    /**
+     * Presenta la data
+     */
+    public static String getGiornoTxt(Date giorno) {
+        String giornoTxt = ''
+        String sep = ','
+        String spazio = ' '
+
+        giornoTxt += getGiorno(giorno)
+        giornoTxt += sep
+        giornoTxt += spazio
+        giornoTxt += getNumGiornoMese(giorno)
+        giornoTxt += spazio
+        giornoTxt += getMese(giorno)
+        giornoTxt += spazio
+        giornoTxt += getAnno(giorno)
+
+        return giornoTxt
+    }// fine del metodo
+
 } // fine della classe

@@ -34,6 +34,10 @@ class ViaggioController {
 
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
+    def tipoTurnoService
+
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
     def viaggioService
 
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
@@ -144,29 +148,37 @@ class ViaggioController {
         ArrayList listaAutomezzi = automezzoService.getAllTarga(croce)
         ArrayList listaTurni
         ArrayList listaTurniId
+        ArrayList listaGiorniNum
+        ArrayList listaGiorniTxt
         String tipoSelezionato
+        int giornoSelezionato = 0
+        String turnoSelezionato
 
-        if (militeService.isLoggatoAdminOrMore()) {
-            listaTurni = turnoService.getTurniAnno(croce)
-            listaTurniId = turnoService.getTurniAnnoId(croce)
-        } else {
-            listaTurni = turnoService.getLastTwoDays(croce)
-            listaTurniId = turnoService.getLastTwoDaysId(croce)
-        }// fine del blocco if-else
+            listaTurniId = tipoTurnoService.getListaTurniId(croce)
+            listaTurni = tipoTurnoService.getListaTurni(croce)
+
+
+        listaGiorniNum = viaggioService.listaGiorniNum()
+        listaGiorniTxt = viaggioService.listaGiorniTxt()
+
+        turnoSelezionato = listaTurni.get(3)
 
         //--selezione suggerita
         tipoSelezionato = listaTipologieViaggi[0]
 
-        Date giorno = new Date()
+//        Date giorno = new Date()
 
         //        render(view: 'selezionetipo', params: params)
         render(view: 'selezione', model: [
-                giorno: giorno,
                 listaTipologieViaggi: listaTipologieViaggi,
-                tipoSelezionato: tipoSelezionato,
-                listaAutomezzi: listaAutomezzi,
-                listaTurni: listaTurni,
-                listaTurniId: listaTurniId],
+                tipoSelezionato     : tipoSelezionato,
+                listaAutomezzi      : listaAutomezzi,
+                listaTurni          : listaTurni,
+                listaTurniId        : listaTurniId,
+                turnoSelezionato    : turnoSelezionato,
+                listaGiorniNum      : listaGiorniNum,
+                listaGiorniTxt      : listaGiorniTxt,
+                giornoSelezionato   : giornoSelezionato],
                 params: params)
     } // fine del metodo
 
@@ -225,6 +237,8 @@ class ViaggioController {
         String siglaAutomezzo = ''
         String tipoForm = 'Crea viaggio 118'
 
+        def a = params
+
         //--controlla che sia selezionato il tipo di viaggio
         if (params.tipoViaggio[1].equals('null')) {
             flash.errors = "Devi selezionare una tipologia di servizio, prima di proseguire"
@@ -276,11 +290,12 @@ class ViaggioController {
                 }// fine del blocco if
             }// fine del blocco if
         } else {
-            flash.errors = "Devi selezionare un turno, prima di proseguire. Se manca, puoi creare un turno extra odierno. Per turni precedenti occorre loggarsi come admin."
+//            flash.message = "Non avendo selezionato un turno, devi inserire manualmente i dati del turno e dell'equipaggio"
+//            flash.errors = "Devi selezionare un turno, prima di proseguire. Se manca, puoi creare un turno extra odierno. Per turni precedenti occorre loggarsi come admin."
+            flash.errors = "Devi selezionare un giorno ed un turno, prima di proseguire. Per giorni più vecchi di una settimana, occorre loggarsi come admin."
             redirect(action: 'create')
-            return
+//            return
         }// fine del blocco if-else
-        def a = params
 
         //--valori suggeriti
         if (true) {
@@ -300,13 +315,15 @@ class ViaggioController {
         if (true) {
             //    if (tipoViaggio.equals('118')) {
 //            render(view: 'fillViaggio', model: [
+
             render(view: 'create', model: [
                     // viaggioInstance: new Viaggio(params),
-                    tipoForm: tipoForm,
+                    tipoForm   : tipoForm,
                     tipoViaggio: TipoViaggio.auto118.toString(), //@todo provvisorio
                     automezzoId: params.automezzo.id,
-                    turnoId: turnoId],
+                    turnoId    : turnoId],
                     params: params)
+
 //            render(view: 'create118', model: [
 //                    viaggioInstance: new Viaggio(params),
 //                    turnoId: turnoId,
@@ -319,6 +336,8 @@ class ViaggioController {
 //                    listaBarellieri: listaBarellieri,
 //                    autistaTurno: autistaTurno],
 //                    params: params)
+
+
         } else {
             render(view: 'selezionemancante', params: params)
         }// fine del blocco if-else

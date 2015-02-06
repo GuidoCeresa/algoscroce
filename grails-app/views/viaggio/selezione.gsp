@@ -158,17 +158,20 @@
     <fieldset class="form">
         <h2>Nuovo viaggio</h2>
 
-        <label class="algoslabel">Selezione del tipo di viaggio effettuato:</label>
+        <label class="algoslabel">Tipo di viaggio effettuato:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <g:select name="tipoViaggio" from="${listaTipologieViaggi}" required=""
                   value="${tipoSelezionato}" noSelection="['null': '']"/>
         <h3>(Prepara il form adeguato)</h3>
 
-        <label class="algoslabel">Automezzo impiegato nel servizio:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <label class="algoslabel">Automezzo impiegato nel servizio:&nbsp;&nbsp;</label>
         <g:select name="auto" from="${listaAutomezzi}" required="" noSelection="['null': '']"/>
         <h3>(Recupera i chilometri ed i viaggi effettuati dal mezzo)</h3>
 
-        <label class="algoslabel">Turno di riferimento:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        <g:select name="turno" keys="${listaTurniId}" from="${listaTurni}" noSelection="['null': '']"/>
+        <label class="algoslabel">Giorno e turno di riferimento:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <g:select name="giorno" keys="${listaGiorniNum}" from="${listaGiorniTxt}"
+                  value="${giornoSelezionato}"/>&nbsp;&nbsp;&nbsp;
+        <g:select name="turno" keys="${listaTurniId}" from="${listaTurni}" value="${turnoSelezionato}"
+                  noSelection="['null': '']"/>
         <h3>(Recupera i militi presenti nel turno)</h3>
 
     </fieldset>

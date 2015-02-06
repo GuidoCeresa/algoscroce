@@ -124,8 +124,8 @@ class SettingsController {
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
-    def update(Long id, Long version) {
-        def settingsInstance = Settings.get(id)
+    def update(Settings settingsInstance) {
+//        def settingsInstance = Settings.get(id)
 
         if (!settingsInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'settings.label', default: 'Settings'), id])
@@ -134,15 +134,15 @@ class SettingsController {
         }// fine del blocco if
 
         params.siglaCroce = croceService.getSiglaCroce(request)
-        if (version != null) {
-            if (settingsInstance.version > version) {
-                settingsInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                        [message(code: 'settings.label', default: 'Settings')] as Object[],
-                        "Another user has updated this Settings while you were editing")
-                render(view: 'edit', model: [settingsInstance: settingsInstance], params: params)
-                return
-            }// fine del blocco if
-        }// fine del blocco if
+//        if (version != null) {
+//            if (settingsInstance.version > version) {
+//                settingsInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+//                        [message(code: 'settings.label', default: 'Settings')] as Object[],
+//                        "Another user has updated this Settings while you were editing")
+//                render(view: 'edit', model: [settingsInstance: settingsInstance], params: params)
+//                return
+//            }// fine del blocco if
+//        }// fine del blocco if
 
         settingsInstance.properties = params
 
