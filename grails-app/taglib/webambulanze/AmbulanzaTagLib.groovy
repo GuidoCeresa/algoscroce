@@ -1996,8 +1996,8 @@ class AmbulanzaTagLib {
         automezzo = viaggio.automezzo
         chilometriPartenza = viaggio.chilometriPartenza
         chilometriArrivo = viaggio.chilometriArrivo
-        chilometriPercorsi=viaggio.chilometriPercorsi
-        chilometriFattura=viaggio.chilometriFattura
+        chilometriPercorsi = viaggio.chilometriPercorsi
+        chilometriFattura = viaggio.chilometriFattura
         codiceInvio = viaggio.codiceInvio
         luogoEvento = viaggio.luogoEvento
         patologia = viaggio.patologia
@@ -2089,6 +2089,7 @@ class AmbulanzaTagLib {
         String testoOut = ''
         Funzione funz
         Milite milite = getMiliteForFunzione(turno, pos)
+        long turnoId
 
         if (usaListaMilitiViaggi) {
             funz = getFunzione(turno, pos)
@@ -2099,7 +2100,8 @@ class AmbulanzaTagLib {
             funz = getFunzione(turno, pos)
             if (funz) {
                 if (milite) {
-                    testoOut += LibHtml.field(Field.testo, funz.descrizione, milite.cognomeNome, "")
+                    turnoId = milite.id
+                    testoOut += LibHtml.field(Field.testoLink, funz.descrizione, milite.cognomeNome, "milite/showEffectively?militeId=${turnoId}")
                 } else {
                     testoOut += LibHtml.field(Field.testo, funz.descrizione, '...', "")
                 }// fine del blocco if-else

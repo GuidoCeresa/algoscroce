@@ -159,7 +159,7 @@
         <h2>Nuovo viaggio</h2>
 
         <label class="algoslabel">Tipo di viaggio effettuato:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        <g:select name="tipoViaggio" from="${listaTipologieViaggi}" required=""
+        <g:select name="tipoViaggio" from="${listaTipiViaggio}" required=""
                   value="${tipoSelezionato}" noSelection="['null': '']"/>
         <h3>(Prepara il form adeguato)</h3>
 
@@ -170,7 +170,7 @@
         <label class="algoslabel">Giorno e turno di riferimento:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <g:select name="giorno" keys="${listaGiorniNum}" from="${listaGiorniTxt}"
                   value="${giornoSelezionato}"/>&nbsp;&nbsp;&nbsp;
-        <g:select name="turno" keys="${listaTurniId}" from="${listaTurni}" value="${turnoSelezionato}"
+        <g:select name="tipoTurno" keys="${listaTurniId}" from="${listaTurniTxt}" value="${turnoSelezionato}"
                   noSelection="['null': '']"/>
         <h3>(Recupera i militi presenti nel turno)</h3>
 

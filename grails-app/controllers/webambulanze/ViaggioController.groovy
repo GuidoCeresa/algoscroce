@@ -144,41 +144,44 @@ class ViaggioController {
     def create() {
         Croce croce = croceService.getCroce(request)
         params.siglaCroce = croceService.getSiglaCroce(request)
-        ArrayList listaTipologieViaggi = TipoViaggio.getListaNomi()
-        ArrayList listaAutomezzi = automezzoService.getAllTarga(croce)
-        ArrayList listaTurni
+        ArrayList listaTipiViaggio
+        ArrayList listaAutomezzi
         ArrayList listaTurniId
+        ArrayList listaTurniTxt
         ArrayList listaGiorniNum
         ArrayList listaGiorniTxt
         String tipoSelezionato
-        int giornoSelezionato = 0
+        int giornoSelezionato
         String turnoSelezionato
 
-            listaTurniId = tipoTurnoService.getListaTurniId(croce)
-            listaTurni = tipoTurnoService.getListaTurni(croce)
+        //--selezione
+        listaTipiViaggio = TipoViaggio.getListaNomi()
+        tipoSelezionato = listaTipiViaggio[0]
 
+        //--automezzo
+        listaAutomezzi = automezzoService.getAllTarga(croce)
 
+        //--giorno
         listaGiorniNum = viaggioService.listaGiorniNum()
         listaGiorniTxt = viaggioService.listaGiorniTxt()
+        giornoSelezionato = 0
 
-        turnoSelezionato = listaTurni.get(3)
+        //-- turno
+        listaTurniId = tipoTurnoService.getListaTurniId(croce)
+        listaTurniTxt = tipoTurnoService.getListaTurni(croce)
+        turnoSelezionato = listaTurniTxt.get(3)
 
-        //--selezione suggerita
-        tipoSelezionato = listaTipologieViaggi[0]
 
-//        Date giorno = new Date()
-
-        //        render(view: 'selezionetipo', params: params)
         render(view: 'selezione', model: [
-                listaTipologieViaggi: listaTipologieViaggi,
-                tipoSelezionato     : tipoSelezionato,
-                listaAutomezzi      : listaAutomezzi,
-                listaTurni          : listaTurni,
-                listaTurniId        : listaTurniId,
-                turnoSelezionato    : turnoSelezionato,
-                listaGiorniNum      : listaGiorniNum,
-                listaGiorniTxt      : listaGiorniTxt,
-                giornoSelezionato   : giornoSelezionato],
+                listaTipiViaggio : listaTipiViaggio,
+                tipoSelezionato  : tipoSelezionato,
+                listaAutomezzi   : listaAutomezzi,
+                listaGiorniNum   : listaGiorniNum,
+                listaGiorniTxt   : listaGiorniTxt,
+                giornoSelezionato: giornoSelezionato,
+                listaTurniId     : listaTurniId,
+                listaTurniTxt    : listaTurniTxt,
+                turnoSelezionato : turnoSelezionato],
                 params: params)
     } // fine del metodo
 
@@ -217,12 +220,13 @@ class ViaggioController {
         String tipoViaggio = params.tipoViaggio
         Automezzo automezzo
         Turno turno
+        TipoTurno tipoTurno
         long turnoId = 0
+        long tipoTurnoId = 0
         long automezzoId = 0
         Settings settingsCroce
-        Date giorno = new Date()
-        Timestamp inizio = giorno.toTimestamp()
-        Timestamp fine = giorno.toTimestamp()
+        Date oggi = Lib.creaDataOggi()
+        Date giorno = null
         Funzione funzAut = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_AUT_118)
         //@todo ASSOLUTAMENTE PROVVISORIO
         Funzione funzSocDae = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_DAE)
@@ -236,7 +240,7 @@ class ViaggioController {
         String siglaTurno = ''
         String siglaAutomezzo = ''
         String tipoForm = 'Crea viaggio 118'
-
+        int numGiorniIndietroDaOggi
         def a = params
 
         //--controlla che sia selezionato il tipo di viaggio
@@ -261,6 +265,51 @@ class ViaggioController {
                 return
             }// fine del blocco if-else
         }// fine del blocco if
+
+        if (params.giorno) {
+            try { // prova ad eseguire il codice
+                numGiorniIndietroDaOggi = Integer.decode(params.giorno)
+                giorno = oggi - numGiorniIndietroDaOggi
+            } catch (Exception unErrore) { // intercetta l'errore
+                log.error unErrore
+            }// fine del blocco try-catch
+        } else {
+            flash.errors = "Devi selezionare un giorno ed un turno, prima di proseguire. Per giorni più vecchi di una settimana, occorre loggarsi come admin."
+            redirect(action: 'create')
+        }// fine del blocco if-else
+
+        if (params.tipoTurno && !params.tipoTurno.equals('null')) {
+            try { // prova ad eseguire il codice
+                tipoTurnoId = Long.decode(params.tipoTurno)
+                if (tipoTurnoId) {
+                    tipoTurno = TipoTurno.findById(tipoTurnoId)
+                    if (tipoTurno) {
+                        turno = Turno.findByCroceAndGiornoAndTipoTurno(croce, giorno, tipoTurno)
+                        if (turno) {
+                            turnoId = turno.id
+                            if (turno.militeFunzione1) {
+                                params.autistaEmergenza = turno.militeFunzione1
+                            }// fine del blocco if
+                            if (turno.militeFunzione2) {
+                                params.soccorritoreDae = turno.militeFunzione2
+                            }// fine del blocco if
+                            if (turno.militeFunzione3) {
+                                params.soccorritore = turno.militeFunzione3
+                            }// fine del blocco if
+                            if (turno.militeFunzione4) {
+                                params.barelliereAffiancamento = turno.militeFunzione4
+                            }// fine del blocco if
+                        }// fine del blocco if
+                    }// fine del blocco if
+                }// fine del blocco if
+            } catch (Exception unErrore) { // intercetta l'errore
+                log.error unErrore
+            }// fine del blocco try-catch
+        } else {
+            flash.errors = "Devi selezionare un giorno ed un turno, prima di proseguire. Per giorni più vecchi di una settimana, occorre loggarsi come admin."
+            redirect(action: 'create')
+        }// fine del blocco if-else
+
         if (croce) {
             settingsCroce = croce.settings
             if (settingsCroce) {
@@ -268,34 +317,34 @@ class ViaggioController {
             }// fine del blocco if
         }// fine del blocco if
 
-        if (params.turno && !params.turno.equals('null')) {
-            turnoId = Long.decode(params.turno)
-            if (turnoId) {
-                turno = Turno.findById(turnoId)
-                if (turno) {
-                    siglaTurno = turno.tipoTurno?.descrizione
-                    if (turno.militeFunzione1) {
-                        params.autistaEmergenza = turno.militeFunzione1
-                        autistaTurno = turno.militeFunzione1.toString()
-                    }// fine del blocco if
-                    if (turno.militeFunzione2) {
-                        params.soccorritoreDae = turno.militeFunzione2
-                    }// fine del blocco if
-                    if (turno.militeFunzione3) {
-                        params.soccorritore = turno.militeFunzione3
-                    }// fine del blocco if
-                    if (turno.militeFunzione4) {
-                        params.barelliereAffiancamento = turno.militeFunzione4
-                    }// fine del blocco if
-                }// fine del blocco if
-            }// fine del blocco if
-        } else {
-//            flash.message = "Non avendo selezionato un turno, devi inserire manualmente i dati del turno e dell'equipaggio"
-//            flash.errors = "Devi selezionare un turno, prima di proseguire. Se manca, puoi creare un turno extra odierno. Per turni precedenti occorre loggarsi come admin."
-            flash.errors = "Devi selezionare un giorno ed un turno, prima di proseguire. Per giorni più vecchi di una settimana, occorre loggarsi come admin."
-            redirect(action: 'create')
-//            return
-        }// fine del blocco if-else
+//        if (params.turno && !params.turno.equals('null')) {
+//            turnoId = Long.decode(params.turno)
+//            if (turnoId) {
+//                turno = Turno.findById(turnoId)
+//                if (turno) {
+//                    siglaTurno = turno.tipoTurno?.descrizione
+//                    if (turno.militeFunzione1) {
+//                        params.autistaEmergenza = turno.militeFunzione1
+//                        autistaTurno = turno.militeFunzione1.toString()
+//                    }// fine del blocco if
+//                    if (turno.militeFunzione2) {
+//                        params.soccorritoreDae = turno.militeFunzione2
+//                    }// fine del blocco if
+//                    if (turno.militeFunzione3) {
+//                        params.soccorritore = turno.militeFunzione3
+//                    }// fine del blocco if
+//                    if (turno.militeFunzione4) {
+//                        params.barelliereAffiancamento = turno.militeFunzione4
+//                    }// fine del blocco if
+//                }// fine del blocco if
+//            }// fine del blocco if
+//        } else {
+////            flash.message = "Non avendo selezionato un turno, devi inserire manualmente i dati del turno e dell'equipaggio"
+////            flash.errors = "Devi selezionare un turno, prima di proseguire. Se manca, puoi creare un turno extra odierno. Per turni precedenti occorre loggarsi come admin."
+//            flash.errors = "Devi selezionare un giorno ed un turno, prima di proseguire. Per giorni più vecchi di una settimana, occorre loggarsi come admin."
+//            redirect(action: 'create')
+////            return
+//        }// fine del blocco if-else
 
         //--valori suggeriti
         if (true) {
