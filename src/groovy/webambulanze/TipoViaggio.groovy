@@ -9,9 +9,9 @@ package webambulanze
 public enum TipoViaggio {
 
     auto118('118', 'Servizio emergenza-urgenza del 118'),
-    ordinario('ord', 'Servizio ambulanza ordinario (per adesso non funziona)'),
-    dializzati('dia', 'Servizio trasporto dializzati (per adesso non funziona)'),
-    interno('int', 'Servizio interno (per adesso non funziona)')
+    ordinario('ord', 'Servizio ambulanza ordinario'),
+    dializzati('dia', 'Servizio trasporto dializzati'),
+    interno('int', 'Servizio interno')
 
     String sigla
     String nome

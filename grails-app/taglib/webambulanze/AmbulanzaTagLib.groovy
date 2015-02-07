@@ -1730,7 +1730,8 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - v5.3 del 20 maggio 2014'
 //        testo = 'Algos© - 5.10 del 12 gennaio 2015'
 //        testo = 'Algos© - 5.11 del 16 gennaio 2015'
-        testo = 'Algos© - 5.12 del 27 gennaio 2015'
+//        testo = 'Algos© - 5.12 del 27 gennaio 2015'
+        testo = 'Algos© - 5.14 del 7 febbraio 2015'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
@@ -1884,6 +1885,8 @@ class AmbulanzaTagLib {
         int numeroServiziEffettuati = 0
         int numeroViaggio = 0
         boolean usaListaMilitiViaggi = false
+        def tipoViaggioTxt
+        boolean usa118 = false
 
         if (params.siglaCroce) {
             croce = Croce.findBySigla((String) params.siglaCroce)
@@ -1910,6 +1913,14 @@ class AmbulanzaTagLib {
             }// fine del blocco if
         }// fine del blocco if
 
+        if (mappa.tipoViaggio) {
+                tipoViaggioTxt = mappa.tipoViaggio[1]
+            if (tipoViaggioTxt.equals('Servizio emergenza-urgenza del 118')) {
+                usa118 = true
+            }// fine del blocco if
+
+        }// fine del blocco if
+
         if (turno) {
             giorno = turno.giorno
             tipoTurno = turno.tipoTurno
@@ -1923,12 +1934,16 @@ class AmbulanzaTagLib {
             testoOut += LibHtml.field(Field.testoLink, 'chilometri alla partenza', chilometriPartenza, "automezzo/show/${mezzoId}")
             testoOut += LibHtml.field(Field.testoObbEdit, "chilometri all'arrivo", '', 'chilometriArrivo')
             testoOut += LibHtml.field(Field.oraMin, "orario di chiamata", oggi, 'inizio')
-            testoOut += LibHtml.fieldLista("codice invio", 'codiceInvio', listaInvio, CodiceInvio.get(), true)
-            testoOut += LibHtml.fieldLista("luogo evento", 'luogoEvento', listaLuogo, LuogoEvento.get(), true)
-            testoOut += LibHtml.fieldLista("patologia segnalata", 'patologia', listaPatologia, Patologia.get(), true)
-            testoOut += LibHtml.fieldLista("codice ricovero", 'codiceRicovero', listaRicovero, CodiceRicovero.get(), true)
+            if (usa118) {
+                testoOut += LibHtml.fieldLista("codice invio", 'codiceInvio', listaInvio, CodiceInvio.get(), true)
+                testoOut += LibHtml.fieldLista("luogo evento", 'luogoEvento', listaLuogo, LuogoEvento.get(), true)
+                testoOut += LibHtml.fieldLista("patologia segnalata", 'patologia', listaPatologia, Patologia.get(), true)
+                testoOut += LibHtml.fieldLista("codice ricovero", 'codiceRicovero', listaRicovero, CodiceRicovero.get(), true)
+            }// fine del blocco if
             testoOut += LibHtml.field(Field.oraMin, "orario di rientro", oggi, 'rientro')
-            testoOut += LibHtml.field(Field.testoObbEdit, "Cartellino 118", '', 'numeroCartellino')
+            if (usa118) {
+                testoOut += LibHtml.field(Field.testoObbEdit, "Cartellino 118", '', 'numeroCartellino')
+            }// fine del blocco if
             testoOut += LibHtml.field('nomePaziente')
             testoOut += LibHtml.field('indirizzoPaziente')
             testoOut += LibHtml.field('cittaPaziente')

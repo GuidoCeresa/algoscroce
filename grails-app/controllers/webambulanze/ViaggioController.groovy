@@ -348,7 +348,7 @@ class ViaggioController {
 
         //--valori suggeriti
         if (true) {
-            params.tipoViaggio = TipoViaggio.auto118
+//            params.tipoViaggio = TipoViaggio.auto118
             params.codiceInvio = CodiceInvio.verde
             params.luogoEvento = LuogoEvento.Z
             params.codiceRicovero = CodiceRicovero.normale
@@ -368,7 +368,7 @@ class ViaggioController {
             render(view: 'create', model: [
                     // viaggioInstance: new Viaggio(params),
                     tipoForm   : tipoForm,
-                    tipoViaggio: TipoViaggio.auto118.toString(), //@todo provvisorio
+                    tipoViaggio: params.tipoViaggio,
                     automezzoId: params.automezzo.id,
                     turnoId    : turnoId],
                     params: params)
