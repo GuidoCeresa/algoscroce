@@ -159,7 +159,7 @@
         <h2>Nuovo viaggio</h2>
 
         <label class="algoslabel">Tipo di viaggio effettuato:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        <g:select name="tipoViaggio" from="${listaTipiViaggio}" required=""
+        <g:select name="tipoViaggio" keys="${listaTipiViaggioSigla}" from="${listaTipiViaggioDescrizione}" required=""
                   value="${tipoSelezionato}" noSelection="['null': '']"/>
         <h3>(Prepara il form adeguato)</h3>
 

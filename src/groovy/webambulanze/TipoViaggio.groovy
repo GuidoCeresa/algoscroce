@@ -28,7 +28,19 @@ public enum TipoViaggio {
         return sigla
     } // end of toString
 
-    public static ArrayList getListaNomi() {
+    public static ArrayList getListaSigla() {
+        ArrayList lista = new ArrayList()
+        String nome
+
+        values()?.each {
+            nome = it.sigla
+            lista.add(nome)
+        }// fine del ciclo each
+
+        return lista
+    }// fine del metodo statico
+
+    public static ArrayList getListaNome() {
         ArrayList lista = new ArrayList()
         String nome
 

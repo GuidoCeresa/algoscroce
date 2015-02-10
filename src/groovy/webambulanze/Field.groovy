@@ -8,12 +8,12 @@ package webambulanze
  */
 public enum Field {
 
-    testoObbligatorioModificabileLinkato(true, true, true),
-    testoObbligatorioModificabile(true, true, false),
-    testo(false, false, false),
-    testoLink(false, false, true),
-    testoObbEdit(true, true, false),
-    testoEdit(false, true, false),
+    txt(false, false, false),
+    txtLink(false, false, true),
+    txtObbEdit(true, true, false),
+    txtEdit(false, true, false),
+    numObbEdit(true, true, false),
+    numEdit(false, true, false),
     oraMin(true, true, false),
     lista(true, true, false),
 

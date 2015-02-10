@@ -125,7 +125,7 @@ class ViaggioService {
         int numGiorniIndietro = 7
 
         if (militeService.isLoggatoAdminOrMore()) {
-            numGiorniIndietro = 60
+            numGiorniIndietro = 500
         }// fine del blocco if
 
         return numGiorniIndietro

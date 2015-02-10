@@ -144,7 +144,8 @@ class ViaggioController {
     def create() {
         Croce croce = croceService.getCroce(request)
         params.siglaCroce = croceService.getSiglaCroce(request)
-        ArrayList listaTipiViaggio
+        ArrayList listaTipiViaggioSigla
+        ArrayList listaTipiViaggioDescrizione
         ArrayList listaAutomezzi
         ArrayList listaTurniId
         ArrayList listaTurniTxt
@@ -155,8 +156,9 @@ class ViaggioController {
         String turnoSelezionato
 
         //--selezione
-        listaTipiViaggio = TipoViaggio.getListaNomi()
-        tipoSelezionato = listaTipiViaggio[0]
+        listaTipiViaggioSigla = TipoViaggio.getListaSigla()
+        listaTipiViaggioDescrizione = TipoViaggio.getListaNome()
+        tipoSelezionato = listaTipiViaggioSigla[0]
 
         //--automezzo
         listaAutomezzi = automezzoService.getAllTarga(croce)
@@ -173,15 +175,16 @@ class ViaggioController {
 
 
         render(view: 'selezione', model: [
-                listaTipiViaggio : listaTipiViaggio,
-                tipoSelezionato  : tipoSelezionato,
-                listaAutomezzi   : listaAutomezzi,
-                listaGiorniNum   : listaGiorniNum,
-                listaGiorniTxt   : listaGiorniTxt,
-                giornoSelezionato: giornoSelezionato,
-                listaTurniId     : listaTurniId,
-                listaTurniTxt    : listaTurniTxt,
-                turnoSelezionato : turnoSelezionato],
+                listaTipiViaggioSigla      : listaTipiViaggioSigla,
+                listaTipiViaggioDescrizione: listaTipiViaggioDescrizione,
+                tipoSelezionato            : tipoSelezionato,
+                listaAutomezzi             : listaAutomezzi,
+                listaGiorniNum             : listaGiorniNum,
+                listaGiorniTxt             : listaGiorniTxt,
+                giornoSelezionato          : giornoSelezionato,
+                listaTurniId               : listaTurniId,
+                listaTurniTxt              : listaTurniTxt,
+                turnoSelezionato           : turnoSelezionato],
                 params: params)
     } // fine del metodo
 
@@ -217,44 +220,34 @@ class ViaggioController {
     def nuovoViaggio() {
         Croce croce = croceService.getCroce(request)
         params.siglaCroce = croceService.getSiglaCroce(request)
-        String tipoViaggio = params.tipoViaggio
         Automezzo automezzo
         Turno turno
         TipoTurno tipoTurno
         long turnoId = 0
-        long tipoTurnoId = 0
-        long automezzoId = 0
+        long tipoTurnoId
+        long automezzoId
         Settings settingsCroce
         Date oggi = Lib.creaDataOggi()
         Date giorno = null
-        Funzione funzAut = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_AUT_118)
-        //@todo ASSOLUTAMENTE PROVVISORIO
-        Funzione funzSocDae = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_DAE)
-        Funzione funzSoc = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_SOC)
-        Funzione funzBar = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_BAR)
-        ArrayList listaAutisti = viaggioService.listaMilitiAbilitati(croce, funzAut)
-        ArrayList listaSocDae = viaggioService.listaMilitiAbilitati(croce, funzSocDae)
-        ArrayList listaSoccorritori = viaggioService.listaMilitiAbilitati(croce, funzSoc)
-        ArrayList listaBarellieri = viaggioService.listaMilitiAbilitati(croce, funzBar)
-        String autistaTurno = ''
-        String siglaTurno = ''
-        String siglaAutomezzo = ''
+        String siglaAutomezzo
         String tipoForm = 'Crea viaggio 118'
         int numGiorniIndietroDaOggi
+        String tipoViaggioSigla=''
         def a = params
 
         //--controlla che sia selezionato il tipo di viaggio
-        if (params.tipoViaggio[1].equals('null')) {
-            flash.errors = "Devi selezionare una tipologia di servizio, prima di proseguire"
-            redirect(action: 'create')
-            return
+        if (params.tipoViaggio && params.tipoViaggio[1]) {
+            tipoViaggioSigla = params.tipoViaggio[1]
+            if (tipoViaggioSigla.equals('null')) {
+                flash.errors = "Devi selezionare una tipologia di servizio, prima di proseguire"
+                redirect(action: 'create')
+                return
+            }// fine del blocco if
         }// fine del blocco if
 
         if (params.auto) {
             automezzo = Automezzo.findByCroceAndTarga(croce, params.auto)
             if (automezzo) {
-                automezzoId = automezzo.id
-                siglaAutomezzo = automezzo.targa
                 params.automezzo = automezzo
                 params.numeroViaggio = automezzo.numeroViaggiEffettuati + 1
                 params.chilometriPartenza = automezzo.chilometriTotaliPercorsi
@@ -317,35 +310,6 @@ class ViaggioController {
             }// fine del blocco if
         }// fine del blocco if
 
-//        if (params.turno && !params.turno.equals('null')) {
-//            turnoId = Long.decode(params.turno)
-//            if (turnoId) {
-//                turno = Turno.findById(turnoId)
-//                if (turno) {
-//                    siglaTurno = turno.tipoTurno?.descrizione
-//                    if (turno.militeFunzione1) {
-//                        params.autistaEmergenza = turno.militeFunzione1
-//                        autistaTurno = turno.militeFunzione1.toString()
-//                    }// fine del blocco if
-//                    if (turno.militeFunzione2) {
-//                        params.soccorritoreDae = turno.militeFunzione2
-//                    }// fine del blocco if
-//                    if (turno.militeFunzione3) {
-//                        params.soccorritore = turno.militeFunzione3
-//                    }// fine del blocco if
-//                    if (turno.militeFunzione4) {
-//                        params.barelliereAffiancamento = turno.militeFunzione4
-//                    }// fine del blocco if
-//                }// fine del blocco if
-//            }// fine del blocco if
-//        } else {
-////            flash.message = "Non avendo selezionato un turno, devi inserire manualmente i dati del turno e dell'equipaggio"
-////            flash.errors = "Devi selezionare un turno, prima di proseguire. Se manca, puoi creare un turno extra odierno. Per turni precedenti occorre loggarsi come admin."
-//            flash.errors = "Devi selezionare un giorno ed un turno, prima di proseguire. Per giorni più vecchi di una settimana, occorre loggarsi come admin."
-//            redirect(action: 'create')
-////            return
-//        }// fine del blocco if-else
-
         //--valori suggeriti
         if (true) {
 //            params.tipoViaggio = TipoViaggio.auto118
@@ -362,31 +326,12 @@ class ViaggioController {
         }// fine del blocco if
 
         if (true) {
-            //    if (tipoViaggio.equals('118')) {
-//            render(view: 'fillViaggio', model: [
-
             render(view: 'create', model: [
-                    // viaggioInstance: new Viaggio(params),
                     tipoForm   : tipoForm,
-                    tipoViaggio: params.tipoViaggio,
+                    tipoViaggioSigla: tipoViaggioSigla,
                     automezzoId: params.automezzo.id,
                     turnoId    : turnoId],
                     params: params)
-
-//            render(view: 'create118', model: [
-//                    viaggioInstance: new Viaggio(params),
-//                    turnoId: turnoId,
-//                    siglaTurno: siglaTurno,
-//                    automezzoId: automezzoId,
-//                    siglaAutomezzo: siglaAutomezzo,
-//                    listaAutisti: listaAutisti,
-//                    listaSocDae: listaSocDae,
-//                    listaSoccorritori: listaSoccorritori,
-//                    listaBarellieri: listaBarellieri,
-//                    autistaTurno: autistaTurno],
-//                    params: params)
-
-
         } else {
             render(view: 'selezionemancante', params: params)
         }// fine del blocco if-else
@@ -413,10 +358,8 @@ class ViaggioController {
             params.giorno = giorno
         }// fine del blocco if
 
-        params.tipoViaggio = TipoViaggio.auto118   //@todo ASSOLUTAMENTE PROVVISORIO
-
-        if (params.tipoViaggio) {
-//            params.tipoViaggio = TipoViaggio.getDaSigla(params.tipoViaggio)  //@todo rimettere
+        if (params.tipoViaggioSigla) {
+            params.tipoViaggio = TipoViaggio.getDaSigla(params.tipoViaggioSigla)
         }// fine del blocco if
 
         if (params.automezzoId) {
@@ -447,6 +390,10 @@ class ViaggioController {
 
         if (params.codiceRicovero) {
             params.codiceRicovero = CodiceRicovero.getDaNome(params.codiceRicovero)
+        }// fine del blocco if
+
+        if (!params.numeroCartellino) {
+            params.numeroCartellino = 'ord'
         }// fine del blocco if
 
         if (params.chilometriPartenza) {
@@ -532,6 +479,10 @@ class ViaggioController {
             viaggioInstance.chilometriPartenza = params.automezzo.chilometriTotaliPercorsi
         }// fine del blocco if
 
+        if (params.numeroServizio) {
+            croceService.setNumeroServiziEffettuati(croce, Integer.decode(params.numeroServizio))
+        }// fine del blocco if
+
         //--controllo chilometraggio
         if (true) {
             if (viaggioInstance.chilometriArrivo == 0) {
@@ -553,7 +504,6 @@ class ViaggioController {
 
         if (!viaggioInstance.save(flush: true)) {
             flash.errors = "Viaggio non registrato - Si è verificato un errore"
-//            render(view: "create", model: [viaggioInstance: viaggioInstance])
             redirect(action: 'list')
             return
         }// fine del blocco if
@@ -705,7 +655,7 @@ class ViaggioController {
         }// fine del blocco if
     } // fine del metodo
 
-    @Secured([Cost.ROLE_PROG])
+    @Secured([Cost.ROLE_ADMIN])
     def delete(Long id) {
         def viaggioInstance = Viaggio.get(id)
         if (!viaggioInstance) {
