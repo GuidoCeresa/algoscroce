@@ -547,10 +547,10 @@ class AmbulanzaTagLib {
 //                        title = message(code: "${cont}.${campo}.labellist")@todo non funge
                         title = campo.toString()
                     } else {
-                        if (elementoLista instanceof Map && elementoLista.titolo && elementoLista.campo) {
+                        if (elementoLista instanceof Map && elementoLista.title && elementoLista.campo) {
                             campo = elementoLista.campo
                             sort = elementoLista.campo
-                            title = elementoLista.titolo
+                            title = elementoLista.title
                         } else { // emergency error
                             campo = 'it'
                             sort = 'asc'

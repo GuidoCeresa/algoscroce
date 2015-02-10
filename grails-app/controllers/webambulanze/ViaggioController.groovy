@@ -51,17 +51,25 @@ class ViaggioController {
     def list(Integer max) {
         def lista
         Croce croce = croceService.getCroce(request)
-        def campiLista = [
-                'numeroServizio',
-                'numeroViaggio',
-                'numeroBolla',
-                'tipoViaggio',
-                'giorno',
-                'automezzo',
-                'chilometriPercorsi',
-                'chilometriFattura',
-                'codiceInvio',
-                'codiceRicovero',
+        ArrayList campiLista
+
+        //--selezione delle colonne (campi) visibili nella lista
+        //--solo nome e di default il titolo viene uguale
+        //--mappa con [campo:'nomeDelCampo', title:'titoloVisibile', sort:'ordinamento']
+        //--se vuoto, mostra i primi n (stabilito nel templates:scaffoldinf:list)
+        //--    nell'ordine stabilito nella constraints della DomainClass
+        campiLista = [
+                [campo: 'numeroServizio', title: '#croce'],
+                [campo: 'numeroViaggio', title: '#mezzo'],
+                [campo: 'numeroBolla', title: '#bolla'],
+                [campo: 'tipoViaggio', title: 'tipo'],
+                [campo: 'automezzo', title: 'automezzo'],
+//                [campo: 'giorno', title: 'data'],
+                [campo: 'turno', title: 'turno'],
+                [campo: 'chilometriPercorsi', title: 'km reali'],
+                [campo: 'chilometriArrivo', title: 'km tot'],
+                [campo: 'chilometriFattura', title: 'km fatt'],
+                [campo: 'codiceInvio', title: 'cod invio']
         ]
 
         if (params.order) {
@@ -99,14 +107,24 @@ class ViaggioController {
         String nomeMezzo = ''
         Croce croce = croceService.getCroce(request)
         Automezzo mezzo = null
-        def campiLista = [
-                'numeroServizio',
-                'numeroViaggio',
-                'numeroBolla',
-                'tipoViaggio',
-                'giorno',
-                'chilometriPercorsi',
-                'chilometriArrivo',
+        ArrayList campiLista = null
+
+        //--selezione delle colonne (campi) visibili nella lista
+        //--solo nome e di default il titolo viene uguale
+        //--mappa con [campo:'nomeDelCampo', title:'titoloVisibile', sort:'ordinamento']
+        //--se vuoto, mostra i primi n (stabilito nel templates:scaffoldinf:list)
+        //--    nell'ordine stabilito nella constraints della DomainClass
+        campiLista = [
+                [campo: 'numeroServizio', title: '#servizio'],
+                [campo: 'numeroViaggio', title: '#mezzo'],
+                [campo: 'numeroBolla', title: '#bolla'],
+                [campo: 'tipoViaggio', title: 'tipo'],
+                [campo: 'automezzo', title: 'automezzo'],
+                [campo: 'giorno', title: 'data'],
+                [campo: 'turno', title: 'turno'],
+                [campo: 'chilometriPercorsi', title: 'km reali'],
+                [campo: 'chilometriArrivo', title: 'km fattura'],
+                [campo: 'codiceInvio', title: 'cod invio']
         ]
 
         if (params.order) {
@@ -232,7 +250,7 @@ class ViaggioController {
         String siglaAutomezzo
         String tipoForm = 'Crea viaggio 118'
         int numGiorniIndietroDaOggi
-        String tipoViaggioSigla=''
+        String tipoViaggioSigla = ''
         def a = params
 
         //--controlla che sia selezionato il tipo di viaggio
@@ -327,10 +345,10 @@ class ViaggioController {
 
         if (true) {
             render(view: 'create', model: [
-                    tipoForm   : tipoForm,
+                    tipoForm        : tipoForm,
                     tipoViaggioSigla: tipoViaggioSigla,
-                    automezzoId: params.automezzo.id,
-                    turnoId    : turnoId],
+                    automezzoId     : params.automezzo.id,
+                    turnoId         : turnoId],
                     params: params)
         } else {
             render(view: 'selezionemancante', params: params)
