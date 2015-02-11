@@ -67,8 +67,17 @@ class MiliteturnoService {
      * @param anno selezionato
      */
     public void calcola(Croce croce, String anno) {
+        Date oggi = Lib.creaDataOggi()
+        String annoCorrente = Lib.getAnno(oggi)
+        boolean isAnnoCorrente = (anno == annoCorrente)
         Date inizio = Lib.creaData1Gennaio(anno)
-        Date fine = Lib.creaData31Dicembre(anno)
+        Date fine
+
+        if (isAnnoCorrente) {
+            fine = oggi
+        } else {
+            fine = Lib.creaData31Dicembre(anno)
+        }// fine del blocco if-else
 
         calcola(croce, anno, inizio, fine)
     }// fine del metodo

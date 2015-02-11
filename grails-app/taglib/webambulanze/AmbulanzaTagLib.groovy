@@ -1732,7 +1732,8 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - 5.11 del 16 gennaio 2015'
 //        testo = 'Algos© - 5.12 del 27 gennaio 2015'
 //        testo = 'Algos© - 5.14 del 7 febbraio 2015'
-        testo = 'Algos© - 5.15 del 10 febbraio 2015'
+//        testo = 'Algos© - 5.15 del 10 febbraio 2015'
+        testo = 'Algos© - 5.17 del 11 febbraio 2015'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
@@ -1889,7 +1890,7 @@ class AmbulanzaTagLib {
         def tipoViaggioTxt
         boolean usa118 = false
         String tipoViaggioSigla
-        String tipoViaggiodescrizione=''
+        String tipoViaggiodescrizione = ''
         TipoViaggio tipoViaggio
 
         if (params.siglaCroce) {
