@@ -1135,8 +1135,11 @@ class AmbulanzaTagLib {
                 testoOut += '<h2>Moduli disponibili al programmatore:</h2>'
                 testoOut += Lib.tagController('Versione', 'Lista versioni installate')
                 testoOut += Lib.tagController('Militestatistiche', 'Forza calcolo statistiche (all)', 'calcola')
+                testoOut += Lib.tagController('Militestatistiche', 'Cancella statistiche (2013)', 'cancella2013')
                 testoOut += Lib.tagController('Militestatistiche', 'Forza calcolo statistiche (2013)', 'calcola2013')
+                testoOut += Lib.tagController('Militestatistiche', 'Cancella statistiche (2014)', 'cancella2014')
                 testoOut += Lib.tagController('Militestatistiche', 'Forza calcolo statistiche (2014)', 'calcola2014')
+                testoOut += Lib.tagController('Militestatistiche', 'Cancella statistiche (2015)', 'cancella2015')
                 testoOut += Lib.tagController('Militestatistiche', 'Forza calcolo statistiche (2015)', 'calcola2015')
                 testoOut += Lib.tagController('Turno', 'Lista turni (non tabellone)', 'list')
             }// fine del blocco if
@@ -1733,7 +1736,8 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - 5.12 del 27 gennaio 2015'
 //        testo = 'Algos© - 5.14 del 7 febbraio 2015'
 //        testo = 'Algos© - 5.15 del 10 febbraio 2015'
-        testo = 'Algos© - 5.17 del 11 febbraio 2015'
+//        testo = 'Algos© - 5.17 del 11 febbraio 2015'
+        testo = 'Algos© - 5.18 del 3 aprile 2015'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
