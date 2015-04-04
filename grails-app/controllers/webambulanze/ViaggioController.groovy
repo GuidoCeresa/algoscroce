@@ -13,6 +13,7 @@ package webambulanze
 import grails.plugin.springsecurity.annotation.Secured
 import org.springframework.dao.DataIntegrityViolationException
 
+import java.sql.Time
 import java.sql.Timestamp
 
 @Secured([Cost.ROLE_MILITE])
@@ -49,7 +50,7 @@ class ViaggioController {
     } // fine del metodo
 
     def list(Integer max) {
-        def lista
+        ArrayList lista
         Croce croce = croceService.getCroce(request)
         ArrayList campiLista
 
@@ -97,8 +98,65 @@ class ViaggioController {
             lista = Viaggio.findAll(params)
         }// fine del blocco if-else
 
+        media(lista)
+
 //        flash.errors = ''
         render(view: 'list', model: [titoloLista: 'prot', viaggioInstanceList: lista, viaggioInstanceTotal: 0, campiLista: campiLista], params: params)
+    } // fine del metodo
+
+    private static void media(ArrayList lista) {
+        Viaggio viaggio
+        long durata
+        long inizio
+        long fine
+        int totale = 0
+        int numViaggi = 0
+        def media
+        Date dataInizio
+        Date dataFine
+
+        if (lista) {
+            lista.each {
+                durata = 0
+                viaggio = (Viaggio) it
+
+                if (viaggio.inizio) {
+                    dataInizio = viaggio.inizio
+                    inizio = dataInizio.time
+                }// fine del blocco if
+                if (viaggio.fine) {
+                    dataFine = viaggio.fine
+                    fine = dataFine.time
+                }// fine del blocco if
+
+                if (inizio && fine) {
+                    durata = fine - inizio
+                    durata = durata / 1000
+                    durata = durata / 60
+
+                    if (durata > 0) {
+                        totale += durata
+                        numViaggi++
+                    } else {
+//                        dataInizio = viaggio.inizio
+//                        dataFine = viaggio.fine
+//                        dataFine = dataFine + 1
+//                        inizio = dataInizio.time
+//                        LibAmbTime.
+//                                durata = fine - inizio
+//                        if (durata > 0) {
+//                            totale += durata
+//                            numViaggi++
+//                        } else {
+//                            def stopErrore
+//                        }// fine del blocco if-else
+                    }// fine del blocco if-else
+                }// fine del blocco if
+            }
+
+            media = totale / numViaggi
+        }// fine del blocco if
+        def stop
     } // fine del metodo
 
     def listaMezzo(Long id) {
