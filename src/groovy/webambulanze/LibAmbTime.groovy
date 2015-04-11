@@ -514,4 +514,48 @@ class LibAmbTime {
         return dataFormattata
     }// fine del metodo
 
+
+    public static boolean isPrecedente(Date dataIniziale, Date dataFinale) {
+        boolean status = false
+        long inizio
+        long fine
+
+        if (dataIniziale && dataFinale) {
+            inizio = dataIniziale.getTime()
+            fine = dataFinale.getTime()
+
+            if (fine > inizio) {
+                status = true
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return status
+    }// fine del metodo
+
+    /**
+     * Differenza in minuti tra due date
+     */
+    public static int differenza(Date dataIniziale, Date dataFinale) {
+        int differenza = 0
+        long inizio
+        long fine
+        long durata
+
+        if (dataIniziale && dataFinale) {
+            if (isPrecedente(dataIniziale, dataFinale)) {
+                inizio = dataIniziale.getTime()
+                fine = dataFinale.getTime()
+                durata = fine - inizio
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (durata) {
+            durata = durata / 1000
+            durata = durata / 60
+            differenza = durata.intValue()
+        }// fine del blocco if
+
+        return differenza
+    }// fine del metodo
+
 } // fine della classe statica

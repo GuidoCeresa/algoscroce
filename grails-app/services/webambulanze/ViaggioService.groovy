@@ -164,4 +164,43 @@ class ViaggioService {
         return listaGiorni
     }// fine del metodo
 
+    /**
+     * Controlla la validità dei campi inizio e fine
+     * La fine deve essere SUCCESSIVA all'inizio
+     */
+    public static boolean isDurataCorretta(Viaggio viaggio) {
+        boolean status = false
+        Date dataIniziale
+        Date dataFinale
+
+        if (viaggio) {
+            dataIniziale = viaggio.inizio
+            dataFinale = viaggio.fine
+            if (dataIniziale && dataIniziale) {
+                status = LibAmbTime.isPrecedente(dataIniziale, dataFinale)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return status
+    }// fine del metodo
+
+    /**
+     * Durata di un viaggio
+     */
+    public static int durata(Viaggio viaggio) {
+        int minuti = 0
+        Date dataIniziale
+        Date dataFinale
+
+        if (viaggio) {
+            dataIniziale = viaggio.inizio
+            dataFinale = viaggio.fine
+            if (dataIniziale && dataIniziale) {
+                minuti = LibAmbTime.differenza(dataIniziale, dataFinale)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return minuti
+    }// fine del metodo
+
 } // end of Service Class

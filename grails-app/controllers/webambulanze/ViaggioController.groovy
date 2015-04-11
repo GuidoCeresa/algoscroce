@@ -13,9 +13,6 @@ package webambulanze
 import grails.plugin.springsecurity.annotation.Secured
 import org.springframework.dao.DataIntegrityViolationException
 
-import java.sql.Time
-import java.sql.Timestamp
-
 @Secured([Cost.ROLE_MILITE])
 class ViaggioController {
 
@@ -50,7 +47,7 @@ class ViaggioController {
     } // fine del metodo
 
     def list(Integer max) {
-        ArrayList lista
+        ArrayList<Viaggio> lista
         Croce croce = croceService.getCroce(request)
         ArrayList campiLista
 
@@ -70,6 +67,7 @@ class ViaggioController {
                 [campo: 'chilometriPercorsi', title: 'km reali'],
                 [campo: 'chilometriArrivo', title: 'km tot'],
                 [campo: 'chilometriFattura', title: 'km fatt'],
+                [campo: 'durata', title: 'min'],
                 [campo: 'codiceInvio', title: 'cod invio']
         ]
 
@@ -104,58 +102,24 @@ class ViaggioController {
         render(view: 'list', model: [titoloLista: 'prot', viaggioInstanceList: lista, viaggioInstanceTotal: 0, campiLista: campiLista], params: params)
     } // fine del metodo
 
-    private static void media(ArrayList lista) {
-        Viaggio viaggio
-        long durata
-        long inizio
-        long fine
+    private static void media(ArrayList<Viaggio> lista) {
         int totale = 0
         int numViaggi = 0
         def media
-        Date dataInizio
-        Date dataFine
 
-        if (lista) {
-            lista.each {
-                durata = 0
-                viaggio = (Viaggio) it
+        lista?.each {
+            if (ViaggioService.isDurataCorretta(it)) {
+                totale += ViaggioService.durata(it)
+                numViaggi++
+                it.save()
+            } else {
+                def stop
+            }// fine del blocco if-else
+        } // fine del ciclo each
 
-                if (viaggio.inizio) {
-                    dataInizio = viaggio.inizio
-                    inizio = dataInizio.time
-                }// fine del blocco if
-                if (viaggio.fine) {
-                    dataFine = viaggio.fine
-                    fine = dataFine.time
-                }// fine del blocco if
+        media = totale / numViaggi
+        media = media.intValue()
 
-                if (inizio && fine) {
-                    durata = fine - inizio
-                    durata = durata / 1000
-                    durata = durata / 60
-
-                    if (durata > 0) {
-                        totale += durata
-                        numViaggi++
-                    } else {
-//                        dataInizio = viaggio.inizio
-//                        dataFine = viaggio.fine
-//                        dataFine = dataFine + 1
-//                        inizio = dataInizio.time
-//                        LibAmbTime.
-//                                durata = fine - inizio
-//                        if (durata > 0) {
-//                            totale += durata
-//                            numViaggi++
-//                        } else {
-//                            def stopErrore
-//                        }// fine del blocco if-else
-                    }// fine del blocco if-else
-                }// fine del blocco if
-            }
-
-            media = totale / numViaggi
-        }// fine del blocco if
         def stop
     } // fine del metodo
 
