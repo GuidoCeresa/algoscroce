@@ -86,6 +86,7 @@ class TipoTurno {
     } // end of static constraints
 
     //--pacchetto di funzioni previste in questo tipo di turno
+    //--vengono ordinate
     public ArrayList<Funzione> getListaFunzioni() {
         ArrayList<Funzione> listaFunzioni = new ArrayList<Funzione>()
         String funz
@@ -97,12 +98,35 @@ class TipoTurno {
             }// fine del blocco if
         } // fine del ciclo for
 
+        listaFunzioni = ordFunzioni(listaFunzioni)
         return listaFunzioni
+    }
+
+    private static ArrayList<Funzione> ordFunzioni(ArrayList<Funzione> listaGrezza) {
+        ArrayList<Funzione> listaOrdinata = new ArrayList<Funzione>()
+        HashMap mappa = new HashMap()
+        def listaKey
+
+        if (listaGrezza && listaGrezza.size() > 0) {
+            listaGrezza?.each {
+                mappa.put(it.ordine, it)
+            } // fine del ciclo each
+
+            listaKey = mappa.keySet().toArray()
+            listaKey.sort()
+
+            listaKey?.each {
+                listaOrdinata.add((Funzione)mappa.get(it))
+            } // fine del ciclo each
+
+        }// fine del blocco if
+
+        return listaOrdinata
     }
 
     //--numero di funzioni previste in questo tipo di turno
     public int numFunzioni() {
-        int num
+        int num = 0
         ArrayList<Funzione> listaFunzioni = this.getListaFunzioni()
 
         if (listaFunzioni) {

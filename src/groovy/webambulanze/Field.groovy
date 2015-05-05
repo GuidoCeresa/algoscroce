@@ -16,6 +16,7 @@ public enum Field {
     numEdit(false, true, false),
     oraMin(true, true, false),
     lista(true, true, false),
+    check(false, true, false),
 
     boolean richiesto
     boolean modificabile

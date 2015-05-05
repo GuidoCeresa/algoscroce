@@ -558,4 +558,32 @@ class LibAmbTime {
         return differenza
     }// fine del metodo
 
+    /**
+     * Controllo tra due date
+     */
+    public static int getGiorno(Date data) {
+        int numGiornoAnno
+        GregorianCalendar cal = new GregorianCalendar()
+
+        cal.setTime(data)
+        numGiornoAnno = cal.get(Calendar.DAY_OF_YEAR)
+
+        return numGiornoAnno
+    }// fine del metodo
+
+    /**
+     * Controllo tra due date
+     */
+    public static boolean stessoGiorno(Date dataIniziale, Date dataFinale) {
+        boolean status = false
+        int giornoAnnoDataIniziale = getGiorno(dataIniziale)
+        int giornoAnnoDataFinale = getGiorno(dataFinale)
+
+        if (giornoAnnoDataIniziale == giornoAnnoDataFinale) {
+            status = true
+        }// fine del blocco if
+
+        return status
+    }// fine del metodo
+
 } // fine della classe statica

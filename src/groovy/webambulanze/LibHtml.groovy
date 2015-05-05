@@ -174,6 +174,9 @@ class LibHtml {
                     case Field.oraMin:
                         testoHtml += setOreMinuti(linkNome, value, pos + 1)
                         break
+                    case Field.check:
+                        testoHtml += inputCheck(value, linkNome, pos + 1)
+                        break
                     default: // caso non definito
                         break
                 } // fine del blocco switch
@@ -315,6 +318,20 @@ class LibHtml {
         return testoHtml
     }// fine del metodo
 
+
+    private static String inputCheck(def value, String nomeCampo, int pos) {
+        String testoHtml = ''
+        String tag = ' checked="checked"'
+
+        testoHtml += nTab(pos)
+        testoHtml += "<input type=\"hidden\" name=\"_${nomeCampo}\"/><input type=\"checkbox\""
+            if (value == 'true') {
+                testoHtml += tag
+            }// fine del blocco if
+        testoHtml += " name=\"${nomeCampo}\" id=\"${nomeCampo}\"/>"
+
+        return testoHtml
+    }// fine del metodo
 
     private static String link(String testoLink, def value, int pos) {
         String testoHtml = ''

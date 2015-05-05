@@ -20,6 +20,7 @@ class Viaggio {
     Date inizio
     //--giorno, ora e minuto di fine viaggio
     Date fine
+    boolean giornoSuccessivo = false //ridondante ma utile
 
     CodiceInvio codiceInvio
     LuogoEvento luogoEvento
@@ -92,6 +93,7 @@ class Viaggio {
         militeFunzione3(nullable: true)
         militeFunzione4(nullable: true)
         durata()
+        giornoSuccessivo()
     } // end of static constraints
 
     static mapping = {
@@ -140,12 +142,15 @@ class Viaggio {
     /**
      * metodo chiamato prima di creare o modificare un record
      */
-    private beforeRegolaDurata() {
-        if (inizio && fine) {
-            if (ViaggioService.isDurataCorretta(this)) {
-                durata = LibAmbTime.differenza(inizio, fine)
-            }// fine del blocco if
-        }// fine del blocco if
+    public beforeRegolaDurata() {
+//        if (inizio && fine) {
+//            if (giornoSuccessivo && LibAmbTime.stessoGiorno(inizio, fine)) {
+//                fine = fine + 1
+//            }// fine del blocco if
+//            if (ViaggioService.isDurataCorretta(this)) {
+//                durata = LibAmbTime.differenza(inizio, fine)
+//            }// fine del blocco if
+//        }// fine del blocco if
     } // fine del metodo
 
     /**

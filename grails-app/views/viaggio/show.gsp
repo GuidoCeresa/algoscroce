@@ -154,8 +154,20 @@
     <li class="fieldcontain">
         <span id="fine-label" class="property-label"><g:message
                 code="viaggio.fine.labelform" default="Fine"/></span>
-        <span class="property-value" aria-labelledby="fine-label"><amb:formatTempo
-                date="${viaggioInstance?.fine}"/></span>
+        <span class="property-value" aria-labelledby="fine-label"><amb:formatTempo date="${viaggioInstance?.fine}"/></span>
+    </li>
+
+    <li class="fieldcontain">
+        <span id="giornoSuccessivo-label" class="property-label"><g:message
+                code="viaggio.giornoSuccessivo.labelform" default="Giorno successivo"/></span>
+        <span class="property-value" aria-labelledby="giornoSuccessivo-label"><g:formatBoolean boolean="${viaggioInstance?.giornoSuccessivo}"/></span>
+    </li>
+
+    <li class="fieldcontain">
+        <span id="durata-label" class="property-label"><g:message
+                code="viaggio.durata.labelform" default="Durata"/></span>
+        <span class="property-value" aria-labelledby="durata-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                             field="durata"/></span>
     </li>
 
     <li class="fieldcontain">

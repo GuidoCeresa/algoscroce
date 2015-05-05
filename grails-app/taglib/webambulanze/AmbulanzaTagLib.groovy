@@ -1737,7 +1737,8 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - 5.14 del 7 febbraio 2015'
 //        testo = 'Algos© - 5.15 del 10 febbraio 2015'
 //        testo = 'Algos© - 5.17 del 11 febbraio 2015'
-        testo = 'Algos© - 5.18 del 3 aprile 2015'
+//        testo = 'Algos© - 5.18 del 3 aprile 2015'
+        testo = 'Algos© - 5.19 del 5 maggio 2015'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
@@ -1952,6 +1953,9 @@ class AmbulanzaTagLib {
                 testoOut += LibHtml.fieldLista("codice ricovero", 'codiceRicovero', listaRicovero, CodiceRicovero.get(), true)
             }// fine del blocco if
             testoOut += LibHtml.field(Field.oraMin, "orario di rientro", oggi, 'rientro')
+            testoOut += LibHtml.field(Field.check, "Giorno successivo", false, 'giornoSuccessivo')
+            testoOut += LibHtml.field('Rientro', formDataGiornoEdit(giorno, 'fine'))
+
             if (usa118) {
                 testoOut += LibHtml.field(Field.txtObbEdit, "Cartellino 118", '', 'numeroCartellino')
             }// fine del blocco if
@@ -1977,6 +1981,8 @@ class AmbulanzaTagLib {
         Date giorno
         Date inizio
         Date fine
+        boolean successivo
+        int durata
         Turno turno
         Automezzo automezzo
         ArrayList listaAutomezzi
@@ -2019,6 +2025,8 @@ class AmbulanzaTagLib {
         giorno = viaggio.giorno
         inizio = viaggio.inizio
         fine = viaggio.fine
+        successivo = viaggio.giornoSuccessivo
+        durata=viaggio.durata
         automezzo = viaggio.automezzo
         chilometriPartenza = viaggio.chilometriPartenza
         chilometriArrivo = viaggio.chilometriArrivo
@@ -2071,6 +2079,10 @@ class AmbulanzaTagLib {
         testoOut += LibHtml.fieldLista("Patologia segnalata", 'patologia', listaPatologia, patologia.toString(), true)
         testoOut += LibHtml.fieldLista("Codice ricovero", 'codiceRicovero', listaRicovero, codiceRicovero.toString(), true)
         testoOut += LibHtml.field(Field.oraMin, "Orario di rientro", fine, 'rientro')
+        testoOut += LibHtml.field('Giorno', formDataGiornoEdit(giorno, 'giorno'))
+
+        testoOut += LibHtml.field(Field.check, "Giorno successivo", successivo, 'giornoSuccessivo')
+//        testoOut += LibHtml.field(Field.txtEdit, 'Durata', durata, 'durata')
         testoOut += LibHtml.field(Field.txtObbEdit, "Cartellino 118", numeroCartellino, 'numeroCartellino')
         testoOut += LibHtml.field(Field.txtEdit, 'Nome del paziente', nomePaziente, 'nomePaziente')
         testoOut += LibHtml.field(Field.txtEdit, 'Indirizzo del paziente', indirizzoPaziente, 'indirizzoPaziente')

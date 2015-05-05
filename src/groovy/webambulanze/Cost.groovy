@@ -123,6 +123,7 @@ public interface Cost {
     public static String CRPT_FUNZIONE_SOC = 'soc'
     public static String CRPT_FUNZIONE_BAR = 'bar'
     public static String CRPT_FUNZIONE_CENTRALINO = 'cent'
+    public static String CRPT_FUNZIONE_CENTRALINO_DUE = 'cent2'
     public static String CRPT_FUNZIONE_PULIZIE = 'pul'
     public static String CRPT_FUNZIONE_UFFICIO = 'uff'
 

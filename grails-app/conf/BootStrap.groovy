@@ -496,6 +496,16 @@ class BootStrap implements Cost {
             addFlagNuoviTurniImmediati()
         }// fine del blocco if
 
+        //--tolto quarto milite negli extra di CRPT
+        if (installaVersione(87)) {
+            fixFunzioniCRPT()
+        }// fine del blocco if
+
+        //--nuova funzione per i servizi sede di CRPT
+        if (installaVersione(88)) {
+            nuovaFunzioneCRPT()
+        }// fine del blocco if
+
         // resetTurniPontetaro()
 
         //--cancella tutto il database
@@ -5202,6 +5212,64 @@ class BootStrap implements Cost {
         newVersione(CROCE_ALGOS, 'Settings', "Aggiunto flag per creare un nuovo turno all'ultimo minuto")
     }// fine del metodo
 
+    //--tolto quarto milite negli extra di CRPT
+    private static void fixFunzioniCRPT() {
+        toglieQuartoMiliteCRPT(CRPT_TIPO_TURNO_EXTRA_MATTINO)
+        toglieQuartoMiliteCRPT(CRPT_TIPO_TURNO_EXTRA_POMERIGGIO)
+        toglieQuartoMiliteCRPT(CRPT_TIPO_TURNO_EXTRA_NOTTE)
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'TipoTurni', 'Tolto barelliere in affiancamento dai turni extra (mattina, pomeriggio e notte')
+    }// fine del metodo
+
+    //--tolto quarto milite negli extra di CRPT
+    private static void toglieQuartoMiliteCRPT(String sigla) {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        TipoTurno tipoTurno
+
+        if (croce) {
+            tipoTurno = TipoTurno.findByCroceAndSigla(croce, sigla)
+            if (tipoTurno) {
+                tipoTurno.funzione4 = null
+                tipoTurno.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+    }// fine del metodo
+
+    //--nuova funzione per i servizi sede di CRPT
+    //--voglio metterla alla seconda riga, così faccio slittare le altre due in basso
+    private static void nuovaFunzioneCRPT() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        TipoTurno tipoTurno
+        Funzione funzioneOld
+        Funzione funzioneNew
+
+        if (croce) {
+            tipoTurno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_SERVIZI)
+            funzioneOld = tipoTurno.funzione1
+            funzioneNew = new Funzione()
+            funzioneNew.croce = funzioneOld.croce
+            funzioneNew.ordine = funzioneOld.ordine + 1
+            funzioneNew.sigla = CRPT_FUNZIONE_CENTRALINO_DUE
+            funzioneNew.siglaVisibile = 'Cent2'
+            funzioneNew.descrizione = 'Centralino2'
+            funzioneNew.funzioniDipendenti = funzioneOld.funzioniDipendenti
+            funzioneNew.save(flush: true)
+
+            funzioneOld = tipoTurno.funzione2
+            funzioneOld.ordine = funzioneOld.ordine + 1
+            funzioneOld.save(flush: true)
+
+            funzioneOld = tipoTurno.funzione3
+            funzioneOld.ordine = funzioneOld.ordine + 1
+            funzioneOld.save(flush: true)
+
+            tipoTurno.funzione4 = funzioneNew
+            tipoTurno.save(flush: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Funzioni', 'Aggiunto secondo centralino')
+    }// fine del metodo
 
     def destroy = {
     }// fine della closur

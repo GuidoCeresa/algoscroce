@@ -96,10 +96,25 @@ class ViaggioController {
             lista = Viaggio.findAll(params)
         }// fine del blocco if-else
 
-        media(lista)
+//        sistemaDurata(lista)
+//        media(lista)
 
 //        flash.errors = ''
         render(view: 'list', model: [titoloLista: 'prot', viaggioInstanceList: lista, viaggioInstanceTotal: 0, campiLista: campiLista], params: params)
+    } // fine del metodo
+
+    private static void sistemaDurata(ArrayList<Viaggio> lista) {
+        int totale = 0
+        int numViaggi = 0
+        def media
+
+        lista?.each {
+            if (!it.durata) {
+                it.beforeRegolaDurata()
+                it.save()
+            }// fine del blocco if
+        } // fine del ciclo each
+
     } // fine del metodo
 
     private static void media(ArrayList<Viaggio> lista) {

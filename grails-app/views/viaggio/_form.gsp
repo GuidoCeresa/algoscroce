@@ -35,16 +35,6 @@
         <g:message code="viaggio.inizio.labelform" default="Inizio" />
         <span class="required-indicator">*</span>
     </label>
-
-
-
-
-
-
-
-
-
-
     <g:datePicker name="inizio" precision="day"  value="${viaggioInstance?.inizio}"  />
 </div>
 
@@ -53,17 +43,22 @@
         <g:message code="viaggio.fine.labelform" default="Fine" />
         <span class="required-indicator">*</span>
     </label>
-
-
-
-
-
-
-
-
-
-
     <g:datePicker name="fine" precision="day"  value="${viaggioInstance?.fine}"  />
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'giornoSuccessivo', 'error')}">
+    <label for="giornoSuccessivo">
+        <g:message code="viaggio.giornoSuccessivo.labelform" default="Giorno successivo" />
+    </label>
+    <g:checkBox name="giornoSuccessivo" value="${viaggioInstance?.giornoSuccessivo}" />
+</div>
+
+
+<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'durata', 'error')}">
+    <label for="durata">
+        <g:message code="viaggio.durata.labelform" default="Durata" />
+    </label>
+    <g:field name="durata" type="number" value="${viaggioInstance.durata}"/>
 </div>
 
 
@@ -125,16 +120,6 @@
         <g:message code="viaggio.chilometriArrivo.labelform" default="Chilometri Arrivo" />
         <span class="required-indicator">*</span>
     </label>
-
-
-
-
-
-
-
-
-
-
     <g:field name="chilometriArrivo" type="number" value="${viaggioInstance.chilometriArrivo}" required=""/>
 </div>
 
