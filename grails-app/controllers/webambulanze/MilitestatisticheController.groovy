@@ -12,10 +12,7 @@ package webambulanze
 
 import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
-import org.hibernate.FlushMode
-import org.hibernate.SessionFactory
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.orm.hibernate3.SessionFactoryUtils
 
 @Secured([Cost.ROLE_MILITE])
 @Transactional(readOnly = false)
@@ -32,6 +29,9 @@ class MilitestatisticheController {
     def militeturnoService
     def croceService
     def utenteService
+
+    private static String ANNO_CORRENTE = '2015'
+    private String anno = ANNO_CORRENTE
 
     def index() {
         redirect(action: 'list', params: params)
@@ -62,7 +62,6 @@ class MilitestatisticheController {
         Croce croce = croceService.getCroce(request)
         Milite milite
         ArrayList menuExtra
-        String anno = '2015'
         HashMap mappa = new HashMap()
         String titoloLista = "Turni effettuati dai militi nell'anno 2015"
         mappa.put('titolo', 'nomignolo')
