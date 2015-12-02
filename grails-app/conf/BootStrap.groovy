@@ -461,6 +461,51 @@ class BootStrap implements Cost {
             modificaOrdinarioPontetaro()
         }// fine del blocco if
 
+        //--aggiunta campo Viaggi
+        if (installaVersione(80)) {
+            addCampoViaggi()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2015 per Demo
+        if (installaVersione(81)) {
+            nuoviTurni2015Demo()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2015 per Pianoro
+        if (installaVersione(82)) {
+            nuoviTurni2015Pianoro()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2015 per Fidenza
+        if (installaVersione(83)) {
+            nuoviTurni2015Fidenza()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2015 per Pontetaro
+        if (installaVersione(84)) {
+            nuoviTurni2015Pontetaro()
+        }// fine del blocco if
+
+        //--aggiornamento costante Cost.ANNI
+        if (installaVersione(85)) {
+            newVersione(CROCE_ALGOS, '2015', 'Aggiornamento costante Cost.ANNI')
+        }// fine del blocco if
+
+        //--aggiunto flag per creazione 'al volo' nuovi turni
+        if (installaVersione(86)) {
+            addFlagNuoviTurniImmediati()
+        }// fine del blocco if
+
+        //--tolto quarto milite negli extra di CRPT
+        if (installaVersione(87)) {
+            fixFunzioniCRPT()
+        }// fine del blocco if
+
+        //--nuova funzione per i servizi sede di CRPT
+        if (installaVersione(88)) {
+            nuovaFunzioneCRPT()
+        }// fine del blocco if
+
         //--modifica permessi demo
         if (installaVersione(89)) {
             modificaSecurityDemo()
@@ -5109,6 +5154,133 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Soppressa funzione soccorritore in ordinario singolo. Ordinari multipli')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2015 per Demo
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2015Demo() {
+        nuoviTurniAnnualiDemo('2015')
+        newVersione(CROCE_DEMO, 'Turni', 'Creati turni vuoti 2015')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2015 per Pianoro
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2015Pianoro() {
+        nuoviTurniAnnualiPianoro('2015')
+        newVersione(CROCE_PUBBLICA_PIANORO, 'Turni', 'Creati turni vuoti 2015')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2015 per Fidenza
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2015Fidenza() {
+        nuoviTurniAnnualiFidenza('2015')
+        newVersione(CROCE_ROSSA_FIDENZA, 'Turni', 'Creati turni vuoti 2015')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2015 per Pontetaro
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2015Pontetaro() {
+        nuoviTurniAnnualiPontetaro('2015')
+        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Creati turni vuoti 2015')
+    }// fine del metodo
+
+    //--aggiunto flag per creazione 'al volo' nuovi turni
+    //--di default falso per tutte le croci
+    //--vero solo per la croce GAPS
+    private static void addFlagNuoviTurniImmediati() {
+        Croce croce
+        Settings pref
+        ArrayList<Croce> lista = Croce.list()
+
+        lista?.each {
+            croce = (Croce) it
+            pref = croce.settings
+            if (pref) {
+                if (croce.sigla.equals(GAPS_CASTELLO)) {
+                    pref.militePuoCreareTurnoImmediato = true
+                } else {
+                    pref.militePuoCreareTurnoImmediato = false
+                }// fine del blocco if-else
+                pref.save(flush: true)
+            }// fine del blocco if
+        } // fine del ciclo each
+
+        newVersione(CROCE_ALGOS, 'Settings', "Aggiunto flag per creare un nuovo turno all'ultimo minuto")
+    }// fine del metodo
+
+    //--tolto quarto milite negli extra di CRPT
+    private static void fixFunzioniCRPT() {
+        toglieQuartoMiliteCRPT(CRPT_TIPO_TURNO_EXTRA_MATTINO)
+        toglieQuartoMiliteCRPT(CRPT_TIPO_TURNO_EXTRA_POMERIGGIO)
+        toglieQuartoMiliteCRPT(CRPT_TIPO_TURNO_EXTRA_NOTTE)
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'TipoTurni', 'Tolto barelliere in affiancamento dai turni extra (mattina, pomeriggio e notte')
+    }// fine del metodo
+
+    //--tolto quarto milite negli extra di CRPT
+    private static void toglieQuartoMiliteCRPT(String sigla) {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        TipoTurno tipoTurno
+
+        if (croce) {
+            tipoTurno = TipoTurno.findByCroceAndSigla(croce, sigla)
+            if (tipoTurno) {
+                tipoTurno.funzione4 = null
+                tipoTurno.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+    }// fine del metodo
+
+    //--nuova funzione per i servizi sede di CRPT
+    //--voglio metterla alla seconda riga, così faccio slittare le altre due in basso
+    private static void nuovaFunzioneCRPT() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        TipoTurno tipoTurno
+        Funzione funzioneOld
+        Funzione funzioneNew
+
+        if (croce) {
+            tipoTurno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_SERVIZI)
+            funzioneOld = tipoTurno.funzione1
+            funzioneNew = new Funzione()
+            funzioneNew.croce = funzioneOld.croce
+            funzioneNew.ordine = funzioneOld.ordine + 1
+            funzioneNew.sigla = CRPT_FUNZIONE_CENTRALINO_DUE
+            funzioneNew.siglaVisibile = 'Cent2'
+            funzioneNew.descrizione = 'Centralino2'
+            funzioneNew.funzioniDipendenti = funzioneOld.funzioniDipendenti
+            funzioneNew.save(flush: true)
+
+            funzioneOld = tipoTurno.funzione2
+            funzioneOld.ordine = funzioneOld.ordine + 1
+            funzioneOld.save(flush: true)
+
+            funzioneOld = tipoTurno.funzione3
+            funzioneOld.ordine = funzioneOld.ordine + 1
+            funzioneOld.save(flush: true)
+
+            tipoTurno.funzione4 = funzioneNew
+            tipoTurno.save(flush: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Funzioni', 'Aggiunto secondo centralino')
+    }// fine del metodo
+
+    //--aggiunta campo Viaggi
+    //--spazzola tutti viaggi esistenti per regolare il valore iniziale
+    private static void addCampoViaggi() {
+        def lista = Viaggio.list()
+        Viaggio viaggio
+
+        lista?.each {
+            viaggio = it
+            if (!viaggio.chilometriFattura) {
+                viaggio.chilometriFattura = viaggio.chilometriPercorsi
+                viaggio.save(flush: true)
+            }// fine del blocco if
+        } // fine del ciclo each
+
     }// fine del metodo
 
     //--modifca accessi per la croce demo
