@@ -1726,7 +1726,17 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - v5.2 del 13 gennaio 2014'
 //        testo = 'Algos© - v5.3 del 20 maggio 2014'
 //        testo = 'Algos© - 5.6 del 29 luglio 2014'
-        testo = 'Algos© - 5.7 del 2 dicembre 2015'
+//        testo = 'Algos© - 5.10 del 12 gennaio 2015'
+//        testo = 'Algos© - 5.11 del 16 gennaio 2015'
+//        testo = 'Algos© - 5.12 del 27 gennaio 2015'
+//        testo = 'Algos© - 5.14 del 7 febbraio 2015'
+//        testo = 'Algos© - 5.15 del 10 febbraio 2015'
+//        testo = 'Algos© - 5.17 del 11 febbraio 2015'
+//        testo = 'Algos© - 5.18 del 3 aprile 2015'
+//        testo = 'Algos© - 5.19 del 5 maggio 2015'
+//        testo = 'Algos© - 5.20 del 11 maggio 2015'
+//        testo = 'Algos© - 5.21 del 23 maggio 2015'
+        testo = 'Algos© - 5.22 del 3 dicembre 2015'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
