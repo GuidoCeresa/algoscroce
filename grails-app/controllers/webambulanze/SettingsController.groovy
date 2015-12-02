@@ -11,11 +11,13 @@
 package webambulanze
 
 import grails.plugin.springsecurity.annotation.Secured
+import grails.transaction.Transactional
 import org.springframework.dao.DataIntegrityViolationException
 
 @Secured([Cost.ROLE_ADMIN])
 class SettingsController {
 
+    static boolean transactional = false
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
@@ -123,8 +125,7 @@ class SettingsController {
         render(view: 'edit', model: [settingsInstance: settingsInstance], params: params)
     } // fine del metodo
 
-    @Secured([Cost.ROLE_PROG])
-    def update(Long id, Long version) {
+    def updateNew(Long id) {
         def settingsInstance = Settings.get(id)
 
         if (!settingsInstance) {
@@ -134,15 +135,15 @@ class SettingsController {
         }// fine del blocco if
 
         params.siglaCroce = croceService.getSiglaCroce(request)
-        if (version != null) {
-            if (settingsInstance.version > version) {
-                settingsInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                        [message(code: 'settings.label', default: 'Settings')] as Object[],
-                        "Another user has updated this Settings while you were editing")
-                render(view: 'edit', model: [settingsInstance: settingsInstance], params: params)
-                return
-            }// fine del blocco if
-        }// fine del blocco if
+//        if (version != null) {
+//            if (settingsInstance.version > version) {
+//                settingsInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+//                        [message(code: 'settings.label', default: 'Settings')] as Object[],
+//                        "Another user has updated this Settings while you were editing")
+//                render(view: 'edit', model: [settingsInstance: settingsInstance], params: params)
+//                return
+//            }// fine del blocco if
+//        }// fine del blocco if
 
         settingsInstance.properties = params
 

@@ -169,8 +169,7 @@
             <span id="dipendente-label" class="property-label"><g:message
                     code="milite.dipendente.labelform" default="Dipendente"/></span>
             
-            <span class="property-value" aria-labelledby="dipendente-label"><g:formatBoolean
-                    boolean="${militeInstance?.dipendente}"/></span>
+            <span class="property-value" aria-labelledby="dipendente-label"><g:formatBoolean boolean="${militeInstance?.dipendente}"/></span>
             
         </li>
         

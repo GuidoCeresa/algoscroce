@@ -22,7 +22,7 @@ class LibHtml {
      * @return stringa html
      */
     public static String field(String nomeCampo) {
-        return field(Field.testoEdit, nomeCampo)
+        return field(Field.txtEdit, nomeCampo)
     }// fine del metodo
 
     /**
@@ -49,7 +49,7 @@ class LibHtml {
      * @return stringa html
      */
     public static String field(String etichetta, def value) {
-        return field(Field.testo, etichetta, value, POS_TAB_DEFAULT)
+        return field(Field.txt, etichetta, value, POS_TAB_DEFAULT)
     }// fine del metodo
 
     /**
@@ -66,7 +66,7 @@ class LibHtml {
      * @return stringa html
      */
     public static String field(String etichetta, def value, int pos) {
-        return field(Field.testo, etichetta, value, pos)
+        return field(Field.txt, etichetta, value, pos)
     }// fine del metodo
 
     /**
@@ -160,11 +160,26 @@ class LibHtml {
             testoHtml += link(linkNome, value, pos + 1)
         } else {
             if (modificabile) {
-                if (campo == Field.oraMin) {
-                    testoHtml += setOreMinuti(linkNome, value, pos + 1)
-                } else {
-                    testoHtml += input(value, linkNome, richiesto, pos + 1)
-                }// fine del blocco if-else
+                switch (campo) {
+                    case Field.txt:
+                    case Field.txtEdit:
+                    case Field.txtLink:
+                    case Field.txtObbEdit:
+                        testoHtml += inputTxt(value, linkNome, richiesto, pos + 1)
+                        break
+                    case Field.numEdit:
+                    case Field.numObbEdit:
+                        testoHtml += inputNum(value, linkNome, richiesto, pos + 1)
+                        break
+                    case Field.oraMin:
+                        testoHtml += setOreMinuti(linkNome, value, pos + 1)
+                        break
+                    case Field.check:
+                        testoHtml += inputCheck(value, linkNome, pos + 1)
+                        break
+                    default: // caso non definito
+                        break
+                } // fine del blocco switch
             } else {
                 testoHtml += nTab(pos + 1)
                 testoHtml += value
@@ -190,7 +205,8 @@ class LibHtml {
      *
      * @return stringa html
      */
-    public static String fieldLista(String etichetta, String nomeCampo, ArrayList listaValori, def valoreSelezionato, boolean richiesto) {
+    public static String fieldLista(String etichetta, String nomeCampo, ArrayList listaValori,
+                                    def valoreSelezionato, boolean richiesto) {
         String testoHtml = ''
 
         testoHtml += nCapo(1)
@@ -274,7 +290,21 @@ class LibHtml {
         return testoHtml
     }// fine del metodo
 
-    private static String input(def value, String nomeCampo, boolean richiesto, int pos) {
+    private static String inputTxt(def value, String nomeCampo, boolean richiesto, int pos) {
+        String testoHtml = ''
+
+        testoHtml += nTab(pos)
+        if (!richiesto) {
+            testoHtml += "<input type=\"text\" name=\"${nomeCampo}\" value=\"${value}\" id=\"${nomeCampo}\" />"
+        } else {
+            testoHtml += "<input type=\"text\" name=\"${nomeCampo}\" value=\"${value}\" required=\"\" id=\"${nomeCampo}\" />"
+        }// fine del blocco if-else
+
+//        testoHtml +="<g:field name=\"${nomeCampo}\" type=\"number\" value=\"${value}\" required=\"\"/>"
+        return testoHtml
+    }// fine del metodo
+
+    private static String inputNum(def value, String nomeCampo, boolean richiesto, int pos) {
         String testoHtml = ''
 
         testoHtml += nTab(pos)
@@ -288,6 +318,20 @@ class LibHtml {
         return testoHtml
     }// fine del metodo
 
+
+    private static String inputCheck(def value, String nomeCampo, int pos) {
+        String testoHtml = ''
+        String tag = ' checked="checked"'
+
+        testoHtml += nTab(pos)
+        testoHtml += "<input type=\"hidden\" name=\"_${nomeCampo}\"/><input type=\"checkbox\""
+            if (value == 'true') {
+                testoHtml += tag
+            }// fine del blocco if
+        testoHtml += " name=\"${nomeCampo}\" id=\"${nomeCampo}\"/>"
+
+        return testoHtml
+    }// fine del metodo
 
     private static String link(String testoLink, def value, int pos) {
         String testoHtml = ''
@@ -439,7 +483,7 @@ class LibHtml {
         String testoHtml = ''
         String tagSelected = 'selected="selected"'
         boolean isSelected
-        def key  =''
+        def key = ''
 
         testoHtml += CAPO
         testoHtml += nTab(pos)

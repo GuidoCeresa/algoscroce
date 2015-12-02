@@ -1,6 +1,11 @@
 package webambulanze
 
+import grails.transaction.Transactional
+
+@Transactional(readOnly = false)
 class MiliteturnoService {
+
+    static boolean transactional = false
 
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
@@ -67,8 +72,17 @@ class MiliteturnoService {
      * @param anno selezionato
      */
     public void calcola(Croce croce, String anno) {
+        Date oggi = Lib.creaDataOggi()
+        String annoCorrente = Lib.getAnno(oggi)
+        boolean isAnnoCorrente = (anno == annoCorrente)
         Date inizio = Lib.creaData1Gennaio(anno)
-        Date fine = Lib.creaData31Dicembre(anno)
+        Date fine
+
+        if (isAnnoCorrente) {
+            fine = oggi
+        } else {
+            fine = Lib.creaData31Dicembre(anno)
+        }// fine del blocco if-else
 
         calcola(croce, anno, inizio, fine)
     }// fine del metodo
@@ -116,6 +130,7 @@ class MiliteturnoService {
         Date fine = Lib.creaDataOggi()
         String anno = Lib.getAnno(inizio)
 
+        cancellaMiliteTurno(croce, inizio, fine)
         calcola(croce, anno, inizio, fine)
         logoService.setInfo(croce, Evento.statistiche)
     }// fine del metodo
@@ -138,7 +153,6 @@ class MiliteturnoService {
      */
     public void calcola(Croce croce, String anno, Date inizio, Date fine) {
         //--Opera per un periodo (intervallo di tempo)
-        cancellaMiliteTurno(croce, inizio, fine)
         ricalcolaMiliteTurno(croce, inizio, fine)
         aggiornaMiliti(croce, inizio, fine)
 
@@ -157,12 +171,12 @@ class MiliteturnoService {
      *      la data corrente per l'anno in corso
      *      il 31 dicmbre per gli anni passati
      */
-    private static void cancellaMiliteTurno(Croce croce, Date inizio, Date fine) {
-//        Militeturno.findAllByCroceAndGiornoBetween(croce, inizio, fine)*.delete(flush: true)
+    public static void cancellaMiliteTurno(Croce croce, Date inizio, Date fine) {
         def lista = Militeturno.findAllByCroceAndGiornoBetween(croce, inizio, fine)
 
         lista?.each {
-            it.delete()
+            it.delete(flush: true)
+
         } // fine del ciclo each
     }// fine del metodo
 

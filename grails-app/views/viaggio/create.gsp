@@ -46,11 +46,11 @@
         </ul>
     </g:hasErrors>
     <g:form action="save">
-        <g:hiddenField name="tipoViaggio" value="${tipoViaggio}"/>
+        <g:hiddenField name="tipoViaggioSigla" value="${tipoViaggioSigla}"/>
         <g:hiddenField name="automezzoId" value="${automezzoId}"/>
         <g:hiddenField name="turnoId" value="${turnoId}"/>
         <fieldset class="form">
-            <amb:newViaggio tipoViaggio="${tipoViaggio}" automezzoId="${automezzoId}"
+            <amb:newViaggio tipoViaggioSigla="${tipoViaggioSigla}" automezzoId="${automezzoId}"
                              turnoId="${turnoId}"> </amb:newViaggio>
         </fieldset>
         <fieldset class="buttons">

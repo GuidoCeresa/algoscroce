@@ -20,6 +20,7 @@ class Viaggio {
     Date inizio
     //--giorno, ora e minuto di fine viaggio
     Date fine
+    boolean giornoSuccessivo = false //ridondante ma utile
 
     CodiceInvio codiceInvio
     LuogoEvento luogoEvento
@@ -50,6 +51,10 @@ class Viaggio {
 
     //--Calcolati
     int chilometriPercorsi = 0
+    int durata = 0
+
+    //--Da fatturare
+    int chilometriFattura = 0
 
     Milite militeFunzione1
     Milite militeFunzione2
@@ -69,16 +74,26 @@ class Viaggio {
         giorno()
         inizio()
         fine()
-        nomePaziente(nullable: true)
-        indirizzoPaziente(nullable: true)
-        cittaPaziente(nullable: true)
-        etaPaziente(nullable: true)
-        prelievo(nullable: true)
-        ricovero(nullable: true)
+        nomePaziente(nullable: true, blank: true)
+        indirizzoPaziente(nullable: true, blank: true)
+        cittaPaziente(nullable: true, blank: true)
+        etaPaziente(nullable: true, blank: true)
+        prelievo(nullable: true, blank: true)
+        ricovero(nullable: true, blank: true)
+        numeroCartellino(nullable: true, blank: true)
+        numeroBolla(nullable: true, blank: true)
+        numeroServizio(nullable: true, blank: true)
+        numeroViaggio(nullable: true, blank: true)
+        codiceInvio(nullable: true)
+        luogoEvento(nullable: true)
+        patologia(nullable: true)
+        codiceRicovero(nullable: true)
         militeFunzione1(nullable: true)
         militeFunzione2(nullable: true)
         militeFunzione3(nullable: true)
         militeFunzione4(nullable: true)
+        durata()
+        giornoSuccessivo()
     } // end of static constraints
 
     static mapping = {
@@ -99,6 +114,7 @@ class Viaggio {
     def beforeInsert = {
         checkNull()
         beforeRegolaChilometri()
+        beforeRegolaDurata()
     } // end of def beforeInsert
 
     /**
@@ -108,6 +124,7 @@ class Viaggio {
     def beforeUpdate = {
         checkNull()
         beforeRegolaChilometri()
+        beforeRegolaDurata()
     } // end of def beforeUpdate
 
     /**
@@ -117,6 +134,23 @@ class Viaggio {
         if (chilometriPartenza && chilometriArrivo) {
             chilometriPercorsi = chilometriArrivo - chilometriPartenza
         }// fine del blocco if
+        if (!chilometriFattura) {
+            chilometriFattura = chilometriPercorsi
+        }// fine del blocco if
+    } // fine del metodo
+
+    /**
+     * metodo chiamato prima di creare o modificare un record
+     */
+    public beforeRegolaDurata() {
+//        if (inizio && fine) {
+//            if (giornoSuccessivo && LibAmbTime.stessoGiorno(inizio, fine)) {
+//                fine = fine + 1
+//            }// fine del blocco if
+//            if (ViaggioService.isDurataCorretta(this)) {
+//                durata = LibAmbTime.differenza(inizio, fine)
+//            }// fine del blocco if
+//        }// fine del blocco if
     } // fine del metodo
 
     /**

@@ -189,6 +189,11 @@ class CroceService {
         return isFlag(croce, Cost.PREF_militePuoCreareTurnoExtra)
     }// fine del metodo
 
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public boolean militePuoCreareTurnoImmediato(Croce croce) {
+        return isFlag(croce, Cost.PREF_militePuoCreareTurnoImmediato)
+    }// fine del metodo
+
     //--controlla il parametro mantenuto nei Settings associati alla croce corrente
     public ControlloTemporale getControlloModifica(def request) {
         ControlloTemporale tipoControlloModifica = null

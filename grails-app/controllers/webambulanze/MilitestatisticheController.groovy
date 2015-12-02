@@ -11,13 +11,13 @@
 package webambulanze
 
 import grails.plugin.springsecurity.annotation.Secured
-import org.hibernate.FlushMode
-import org.hibernate.SessionFactory
+import grails.transaction.Transactional
 import org.springframework.dao.DataIntegrityViolationException
-import org.springframework.orm.hibernate3.SessionFactoryUtils
 
 @Secured([Cost.ROLE_MILITE])
+@Transactional(readOnly = false)
 class MilitestatisticheController {
+    static boolean transactional = false
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
     private static String PREFIX = 'anno'
@@ -29,6 +29,9 @@ class MilitestatisticheController {
     def militeturnoService
     def croceService
     def utenteService
+
+    private static String ANNO_CORRENTE = '2015'
+    private String anno = ANNO_CORRENTE
 
     def index() {
         redirect(action: 'list', params: params)
@@ -59,9 +62,8 @@ class MilitestatisticheController {
         Croce croce = croceService.getCroce(request)
         Milite milite
         ArrayList menuExtra
-        String anno = '2014'
         HashMap mappa = new HashMap()
-        String titoloLista = "Turni effettuati dai militi nell'anno 2013"
+        String titoloLista = "Turni effettuati dai militi nell'anno 2015"
         mappa.put('titolo', 'nomignolo')
         mappa.put('campo', 'database')
 
@@ -76,13 +78,13 @@ class MilitestatisticheController {
         // fine della definizione
 
         def campiLista = [[:],
-                'milite',
-                'ultimo',
-                'delta',
-                'status',
-                'turni',
-                'ore',
-                'oreExtra']
+                          'milite',
+                          'ultimo',
+                          'delta',
+                          'status',
+                          'turni',
+                          'ore',
+                          'oreExtra']
         def campiExtra
 
         if (params.anno) {
@@ -126,11 +128,10 @@ class MilitestatisticheController {
                 campiExtra = funzioneService.campiExtraPerCroce(croce)
                 if (campiExtra) {
                     for (int k = 1; k <= campiExtra.size(); k++) {
-                        mappa = ['titolo': campiExtra.get(k - 1), 'campo': 'funz' + "${k}"]
+                        mappa = ['title': campiExtra.get(k - 1), 'campo': 'funz' + "${k}"]
                         campiLista.add(mappa)
                     } // fine del ciclo for
                 }// fine del blocco if
-
             }// fine del blocco if-else
         } else {
             lista = Milite.findAll(params)
@@ -140,12 +141,12 @@ class MilitestatisticheController {
         campiLista.remove([:])
 
         render(view: 'list', model: [
-                militestatisticheInstanceList: lista,
+                militestatisticheInstanceList : lista,
                 militestatisticheInstanceTotal: 0,
-                menuExtra: menuExtra,
-                titoloLista: titoloLista,
-                campiLista: campiLista,
-                campiExtra: null],
+                menuExtra                     : menuExtra,
+                titoloLista                   : titoloLista,
+                campiLista                    : campiLista,
+                campiExtra                    : null],
                 params: params)
     } // fine del metodo
 
@@ -154,6 +155,95 @@ class MilitestatisticheController {
         utenteService.regolaAbilitazioni()
         redirect(action: 'list', params: params)
     } // fine del metodo
+
+
+    def cancella2013() {
+        Croce croce = croceService.getCroce(request)
+        String anno = Cost.ANNI[1]
+        Date inizio
+        Date fine
+
+        if (croce) {
+            inizio = Lib.creaData1Gennaio(anno)
+            fine = Lib.creaData31Dicembre(anno)
+            militeturnoService.cancellaMiliteTurno(croce, inizio, fine)
+        }// fine del blocco if
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def calcola2013() {
+        Croce croce = croceService.getCroce(request)
+        String anno = Cost.ANNI[1]
+        Date inizio
+        Date fine
+
+        if (croce) {
+            inizio = Lib.creaData1Gennaio(anno)
+            fine = Lib.creaData31Dicembre(anno)
+            militeturnoService.calcola(croce, anno, inizio, fine)
+        }// fine del blocco if
+        utenteService.regolaAbilitazioni()
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def cancella2014() {
+        Croce croce = croceService.getCroce(request)
+        String anno = Cost.ANNI[2]
+        Date inizio
+        Date fine
+
+        if (croce) {
+            inizio = Lib.creaData1Gennaio(anno)
+            fine = Lib.creaData31Dicembre(anno)
+            militeturnoService.cancellaMiliteTurno(croce, inizio, fine)
+        }// fine del blocco if
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def calcola2014() {
+        Croce croce = croceService.getCroce(request)
+        String anno = Cost.ANNI[2]
+        Date inizio
+        Date fine
+
+        if (croce) {
+            inizio = Lib.creaData1Gennaio(anno)
+            fine = Lib.creaData31Dicembre(anno)
+            militeturnoService.calcola(croce, anno, inizio, fine)
+        }// fine del blocco if
+        utenteService.regolaAbilitazioni()
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def cancella2015() {
+        Croce croce = croceService.getCroce(request)
+        String anno = Cost.ANNI[3]
+        Date inizio
+        Date fine
+
+        if (croce) {
+            inizio = Lib.creaData1Gennaio(anno)
+            fine = Lib.creaData31Dicembre(anno)
+            militeturnoService.cancellaMiliteTurno(croce, inizio, fine)
+        }// fine del blocco if
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def calcola2015() {
+        Croce croce = croceService.getCroce(request)
+        String anno = Cost.ANNI[3]
+        Date inizio
+        Date fine
+
+        if (croce) {
+            inizio = Lib.creaData1Gennaio(anno)
+            fine = Lib.creaDataOggi()
+            militeturnoService.calcola(croce, anno, inizio, fine)
+        }// fine del blocco if
+        utenteService.regolaAbilitazioni()
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
 
     @Secured([Cost.ROLE_PROG])
     def create() {

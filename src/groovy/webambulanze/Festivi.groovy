@@ -8,33 +8,37 @@ package webambulanze
  */
 public enum Festivi {
 
-    capodanno(1, 1, 1, 1),
-    epifania(6, 6, 6, 6),
-    carnevale(65, 50, 41, 0),
-    pasqua(114, 99, 90, 110),
-    pasquetta(115, 100, 91, 111),
-    liberazione(115, 116, 115, 115),
-    lavoro(121, 122, 121, 121),
-    repubblica(153, 154, 153, 153),
-    ferragosto(227, 228, 227, 227),
-    ognissanti(305, 306, 305, 305),
-    immacolata(342, 343, 342, 342),
-    natale(359, 360, 359, 359),
-    stefano(360, 361, 360, 360)
+    capodanno(1, 1, 1, 1, 1, 1),
+    epifania(6, 6, 6, 6, 6, 6),
+    carnevale(65, 50, 41, 0, 46, 38),
+    pasqua(114, 99, 90, 110, 95, 87),
+    pasquetta(115, 100, 91, 111, 96, 88),
+    liberazione(115, 116, 115, 115, 115, 115),
+    lavoro(121, 122, 121, 121, 121, 121),
+    repubblica(153, 154, 153, 153, 153, 153),
+    ferragosto(227, 228, 227, 227, 227, 227),
+    ognissanti(305, 306, 305, 305, 305, 305),
+    immacolata(342, 343, 342, 342, 342, 342),
+    natale(359, 360, 359, 359, 359, 359),
+    stefano(360, 361, 360, 360, 360, 360)
 
     private int anno11
     private int anno12
     private int anno13
     private int anno14
+    private int anno15
+    private int anno16
 
     /**
      * Costruttore con parametri.
      */
-    Festivi(int anno11, int anno12, int anno13, int anno14) {
+    Festivi(int anno11, int anno12, int anno13, int anno14, int anno15, int anno16) {
         this.setAnno11(anno11)
         this.setAnno12(anno12)
         this.setAnno13(anno13)
         this.setAnno14(anno14)
+        this.setAnno15(anno15)
+        this.setAnno16(anno16)
     }// fine del metodo costruttore
 
     //--restituisce tutti e solo i giorni festivi dell'anno
@@ -114,9 +118,47 @@ public enum Festivi {
     }// fine del metodo statico
 
     //--restituisce tutti e solo i giorni festivi dell'anno
+    static public ArrayList<Integer> all2015() {
+        ArrayList<Integer> giorni = new ArrayList<Integer>()
+        ArrayList<Festivi> festivi = values()
+        Festivi festivo
+        int numProgressivoGiorno
+
+        festivi.each {
+            festivo = it
+            numProgressivoGiorno = festivo.getAnno15()
+
+            if (numProgressivoGiorno > 0) {
+                giorni.add(numProgressivoGiorno)
+            }// fine del blocco if
+        } // fine del ciclo each
+
+        return giorni
+    }// fine del metodo statico
+
+    //--restituisce tutti e solo i giorni festivi dell'anno
+    static public ArrayList<Integer> all2016() {
+        ArrayList<Integer> giorni = new ArrayList<Integer>()
+        ArrayList<Festivi> festivi = values()
+        Festivi festivo
+        int numProgressivoGiorno
+
+        festivi.each {
+            festivo = it
+            numProgressivoGiorno = festivo.getAnno16()
+
+            if (numProgressivoGiorno > 0) {
+                giorni.add(numProgressivoGiorno)
+            }// fine del blocco if
+        } // fine del ciclo each
+
+        return giorni
+    }// fine del metodo statico
+
+    //--restituisce tutti e solo i giorni festivi dell'anno
     static public ArrayList<Integer> all(String anno) {
         ArrayList<Integer> giorni = new ArrayList<Integer>()
-        ArrayList anniValidi = ['2011', '2012', '2013', '2014']
+        ArrayList anniValidi = ['2011', '2012', '2013', '2014', '2015', '2016']
 
         if (anno && anno in anniValidi) {
             switch (anno) {
@@ -129,8 +171,14 @@ public enum Festivi {
                 case anniValidi[2]:
                     giorni = all2013()
                     break
-                case anniValidi[4]:
+                case anniValidi[3]:
                     giorni = all2014()
+                    break
+                case anniValidi[4]:
+                    giorni = all2015()
+                    break
+                case anniValidi[5]:
+                    giorni = all2016()
                     break
                 default: // caso non definito
                     break
@@ -170,5 +218,21 @@ public enum Festivi {
 
     void setAnno14(int anno14) {
         this.anno14 = anno14
+    }
+
+    int getAnno15() {
+        return anno15
+    }
+
+    void setAnno15(int anno15) {
+        this.anno15 = anno15
+    }
+
+    int getAnno16() {
+        return anno16
+    }
+
+    void setAnno16(int anno16) {
+        this.anno16 = anno16
     }
 } // fine della classe

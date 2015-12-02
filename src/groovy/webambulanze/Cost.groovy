@@ -17,7 +17,7 @@ public interface Cost {
 
     //--anni di utilizzo del programma per le statistiche
     //--il 2012 è farlocco e serve per dare più credibilità al programma
-    public static String[] ANNI = ['2012', '2013', '2014']
+    public static String[] ANNI = ['2012', '2013', '2014', '2015']
 
     //--alcune sigle di croci per operazioni selettive
     public static String CROCE_ALGOS = 'ALGOS'
@@ -60,6 +60,7 @@ public interface Cost {
     public static String PREF_bloccaSoloFunzioniObbligatorie = 'bloccaSoloFunzioniObbligatorie'
     public static String PREF_militePuoCreareTurnoStandard = 'militePuoCreareTurnoStandard'
     public static String PREF_militePuoCreareTurnoExtra = 'militePuoCreareTurnoExtra'
+    public static String PREF_militePuoCreareTurnoImmediato = 'militePuoCreareTurnoImmediato'
     public static String PREF_isTurnoSettimanale = 'isTurnoSettimanale'
     public static String PREF_usaNomeCognome = 'usaNomeCognome'
     public static String PREF_usaListaMilitiViaggi = 'usaListaMilitiViaggi'
@@ -122,6 +123,7 @@ public interface Cost {
     public static String CRPT_FUNZIONE_SOC = 'soc'
     public static String CRPT_FUNZIONE_BAR = 'bar'
     public static String CRPT_FUNZIONE_CENTRALINO = 'cent'
+    public static String CRPT_FUNZIONE_CENTRALINO_DUE = 'cent2'
     public static String CRPT_FUNZIONE_PULIZIE = 'pul'
     public static String CRPT_FUNZIONE_UFFICIO = 'uff'
 
