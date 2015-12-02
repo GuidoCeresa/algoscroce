@@ -506,6 +506,11 @@ class BootStrap implements Cost {
             nuovaFunzioneCRPT()
         }// fine del blocco if
 
+        //--modifica permessi demo
+        if (installaVersione(89)) {
+            modificaSecurityDemo()
+        }// fine del blocco if
+
         // resetTurniPontetaro()
 
         //--cancella tutto il database
@@ -2422,6 +2427,7 @@ class BootStrap implements Cost {
         Utente utente = null
         Croce croce = Croce.findBySigla(siglaCroce)
         Ruolo ruolo = Ruolo.findByAuthority(siglaRuolo)
+        UtenteRuolo utenteRuolo
 
         if (nick && croce && ruolo) {
             utente = Utente.findOrCreateByNickname(nick)
@@ -2439,7 +2445,11 @@ class BootStrap implements Cost {
 
             utente.save(flush: true)
             if (utente) {
-                UtenteRuolo.findOrCreateByRuoloAndUtente(ruolo, utente).save(failOnError: true)
+                utenteRuolo = UtenteRuolo.findByUtenteAndRuolo(utente, ruolo)
+                if (!utenteRuolo) {
+                    utenteRuolo = new UtenteRuolo(utente: utente, ruolo: ruolo)
+                    utenteRuolo.save(flush: true)
+                }// end of if cycle
             }// fine del blocco if
         }// fine del blocco if
 
@@ -5269,6 +5279,98 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         newVersione(CROCE_ROSSA_PONTETARO, 'Funzioni', 'Aggiunto secondo centralino')
+    }// fine del metodo
+
+    //--modifica accessi per la croce demo
+    //--cancella ospite
+    //--aggiunge cinque utenti
+    //--aggiunge due admin
+    //--li crea SOLO se non esistono già
+    private static void modificaSecurityDemo() {
+        Ruolo adminRole = Ruolo.findByAuthority(ROLE_ADMIN)
+        Utente utente
+        UtenteRuolo utenteRuolo
+        Croce croceDemo = Croce.findBySigla(CROCE_DEMO)
+        ArrayList<Logo> logo
+        Milite milite
+
+        // elimina ospite
+        utente = Utente.findByCroceAndNickname(croceDemo, "ospite")
+        if (utente) {
+            utenteRuolo = UtenteRuolo.findByUtente(utente)
+            if (utenteRuolo) {
+                utenteRuolo.delete()
+            }// end of if cycle
+            logo = Logo.findAllByUtente(utente)
+            if (logo) {
+                logo.each {
+                    it.delete()
+                }
+            }// end of if cycle
+            utente.delete()
+        }// end of if cycle
+
+        // utente
+        milite = Milite.findByCroceAndCognome(croceDemo, "Baroni")
+        if (milite) {
+            utente = newUtente(CROCE_DEMO, ROLE_MILITE, "Baroni Paolo", "baroni", milite)
+            utente.save(flush: true)
+        }// end of if cycle
+
+        // utente
+        milite = Milite.findByCroceAndCognome(croceDemo, "Maggioni")
+        if (milite) {
+            utente = newUtente(CROCE_DEMO, ROLE_MILITE, "Maggioni Rita", "maggioni", milite)
+            utente.save(flush: true)
+            UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente)
+        }// end of if cycle
+
+
+        // admin
+        milite = Milite.findByCroceAndCognome(croceDemo, "Rossi")
+        if (milite) {
+            utente = newUtente(CROCE_DEMO, ROLE_MILITE, "Rossi Mario (admin)", "rossi", milite)
+            utente.save(flush: true)
+        }// end of if cycle
+        if (utente) {
+            utenteRuolo = UtenteRuolo.findByUtenteAndRuolo(utente, adminRole)
+            if (!utenteRuolo) {
+                utenteRuolo = new UtenteRuolo(utente: utente, ruolo: adminRole)
+                utenteRuolo.save(flush: true)
+            }// end of if cycle
+        }// fine del blocco if
+
+        // utente
+        milite = Milite.findByCroceAndCognome(croceDemo, "Rubicondi")
+        if (milite) {
+            utente = newUtente(CROCE_DEMO, ROLE_MILITE, "Rubicondi Daniela", "rubicondi", milite)
+            utente.save(flush: true)
+            UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente)
+        }// end of if cycle
+
+        // admin
+        milite = Milite.findByCroceAndCognome(croceDemo, "Scotti")
+        if (milite) {
+            utente = newUtente(CROCE_DEMO, ROLE_MILITE, "Scotti Adriano (admin)", "scotti", milite)
+            utente.save(flush: true)
+        }// end of if cycle
+        if (utente) {
+            utenteRuolo = UtenteRuolo.findByUtenteAndRuolo(utente, adminRole)
+            if (!utenteRuolo) {
+                utenteRuolo = new UtenteRuolo(utente: utente, ruolo: adminRole)
+                utenteRuolo.save(flush: true)
+            }// end of if cycle
+        }// fine del blocco if
+
+        // utente
+        milite = Milite.findByCroceAndCognome(croceDemo, "Terzino")
+        if (milite) {
+            utente = newUtente(CROCE_DEMO, ROLE_MILITE, "Terzino Umberto", "terzino", milite)
+            utente.save(flush: true)
+            UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente)
+        }// end of if cycle
+
+        newVersione(CROCE_DEMO, 'Security', 'Aggiunti login per militi ed admin')
     }// fine del metodo
 
     def destroy = {
