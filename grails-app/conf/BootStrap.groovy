@@ -461,6 +461,11 @@ class BootStrap implements Cost {
             modificaOrdinarioPontetaro()
         }// fine del blocco if
 
+        //--modifica permessi demo
+        if (installaVersione(89)) {
+            modificaSecurityDemo()
+        }// fine del blocco if
+
         // resetTurniPontetaro()
 
         //--cancella tutto il database
@@ -2420,8 +2425,15 @@ class BootStrap implements Cost {
     //--crea una versione
     //--lo crea SOLO se non esiste già
     private static void newVersione(String siglaCroce, String titolo, String descrizione) {
-        Versione versione
         int numero = getVersione() + 1
+        newVersione(siglaCroce, titolo, descrizione, numero)
+    }// fine del metodo
+
+    //--crea una versione
+    //--lo crea SOLO se non esiste già
+    private static void newVersione(String siglaCroce, String titolo, String descrizione, int numero) {
+        Versione versione
+        numero++
         Date giorno = new Date()
         Croce croce = Croce.findBySigla(siglaCroce)
 
@@ -5086,17 +5098,30 @@ class BootStrap implements Cost {
             turno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_SINGOLO)
             if (turno) {
                 turno.funzione2 = null
-                turno.multiplo=true
+                turno.multiplo = true
                 turno.save(flush: true)
             }// fine del blocco if
             turno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_DOPPIO)
             if (turno) {
-                turno.multiplo=true
+                turno.multiplo = true
                 turno.save(flush: true)
             }// fine del blocco if
         }// fine del blocco if
 
         newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Soppressa funzione soccorritore in ordinario singolo. Ordinari multipli')
+    }// fine del metodo
+
+    //--modifca accessi per la croce demo
+    //--aggiunge un accesso come admin
+    //--li crea SOLO se non esistono già
+    private static void modificaSecurityDemo() {
+        Utente utente
+
+        // admin
+        utente = newUtente(CROCE_DEMO, ROLE_ADMIN, "admin", "admin")
+        utente.save(flush: true)
+
+        newVersione(CROCE_DEMO, 'Security', 'Aggiunto accesso per funzione admin.')
     }// fine del metodo
 
     def destroy = {

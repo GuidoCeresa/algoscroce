@@ -89,7 +89,7 @@ class TurnoController {
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
-    @Secured([Cost.ROLE_MILITE])
+    @Secured([Cost.ROLE_ADMIN, Cost.ROLE_MILITE])
     def newTurno() {
         boolean continua = false
         String tipoTurnoTxt
@@ -152,7 +152,7 @@ class TurnoController {
         newFillTurno(nuovoOppureEsistente, nuovoTurno)
     }// fine della closure
 
-    @Secured([Cost.ROLE_OSPITE, Cost.ROLE_MILITE])
+    @Secured([Cost.ROLE_ADMIN, Cost.ROLE_MILITE, Cost.ROLE_OSPITE])
     def fillTurno() {
         String turnoIdTxt
         long turnoId
@@ -178,7 +178,7 @@ class TurnoController {
 
     }// fine della closure
 
-    @Secured([Cost.ROLE_OSPITE, Cost.ROLE_MILITE])
+    @Secured([Cost.ROLE_ADMIN, Cost.ROLE_MILITE, Cost.ROLE_OSPITE])
     def newFillTurno(Turno turnoInstance, boolean nuovoTurno) {
         params.siglaCroce = croceService.getSiglaCroce(request)
         boolean turniSecured = croceService.isTurniSecured(params.siglaCroce)
