@@ -5281,6 +5281,22 @@ class BootStrap implements Cost {
         newVersione(CROCE_ROSSA_PONTETARO, 'Funzioni', 'Aggiunto secondo centralino')
     }// fine del metodo
 
+    //--aggiunta campo Viaggi
+    //--spazzola tutti viaggi esistenti per regolare il valore iniziale
+    private static void addCampoViaggi() {
+        def lista = Viaggio.list()
+        Viaggio viaggio
+
+        lista?.each {
+            viaggio = it
+            if (!viaggio.chilometriFattura) {
+                viaggio.chilometriFattura = viaggio.chilometriPercorsi
+                viaggio.save(flush: true)
+            }// fine del blocco if
+        } // fine del ciclo each
+
+    }// fine del metodo
+
     //--modifica accessi per la croce demo
     //--cancella ospite
     //--aggiunge cinque utenti
