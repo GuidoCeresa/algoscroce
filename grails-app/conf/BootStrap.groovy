@@ -511,6 +511,32 @@ class BootStrap implements Cost {
             modificaSecurityDemo()
         }// fine del blocco if
 
+        //--aggiornamento costante Cost.ANNI
+        if (installaVersione(90)) {
+            newVersione(CROCE_ALGOS, '2016', 'Aggiornamento costante Cost.ANNI')
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2016 per Demo
+        if (installaVersione(91)) {
+            nuoviTurni2016Demo()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2016 per Pianoro
+        if (installaVersione(92)) {
+            nuoviTurni2016Pianoro()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2016 per Fidenza
+        if (installaVersione(93)) {
+            nuoviTurni2016Fidenza()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2016 per Pontetaro
+        if (installaVersione(94)) {
+            nuoviTurni2016Pontetaro()
+        }// fine del blocco if
+
+
         // resetTurniPontetaro()
 
         //--cancella tutto il database
@@ -5372,6 +5398,35 @@ class BootStrap implements Cost {
         }// end of if cycle
 
         newVersione(CROCE_DEMO, 'Security', 'Aggiunti login per militi ed admin')
+    }// fine del metodo
+
+
+    //--creazione nuovi turni anno 2016 per Demo
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2016Demo() {
+        nuoviTurniAnnualiDemo('2016')
+        newVersione(CROCE_DEMO, 'Turni', 'Creati turni vuoti 2016')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2016 per Pianoro
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2016Pianoro() {
+        nuoviTurniAnnualiPianoro('2016')
+        newVersione(CROCE_PUBBLICA_PIANORO, 'Turni', 'Creati turni vuoti 2016')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2016 per Fidenza
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2016Fidenza() {
+        nuoviTurniAnnualiFidenza('2016')
+        newVersione(CROCE_ROSSA_FIDENZA, 'Turni', 'Creati turni vuoti 2016')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2016 per Pontetaro
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2016Pontetaro() {
+        nuoviTurniAnnualiPontetaro('2016')
+        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Creati turni vuoti 2016')
     }// fine del metodo
 
     def destroy = {
