@@ -30,7 +30,7 @@ class MilitestatisticheController {
     def croceService
     def utenteService
 
-    private static String ANNO_CORRENTE = '2015'
+    private static String ANNO_CORRENTE = '2016'
     private String anno = ANNO_CORRENTE
 
     def index() {
@@ -54,6 +54,11 @@ class MilitestatisticheController {
 
     def anno2015() {
         params.anno = '2015'
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def anno2016() {
+        params.anno = '2016'
         redirect(action: 'list', params: params)
     } // fine del metodo
 
