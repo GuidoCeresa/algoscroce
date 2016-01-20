@@ -5429,6 +5429,11 @@ class BootStrap implements Cost {
         newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Creati turni vuoti 2016')
     }// fine del metodo
 
+    //--agganciato il 2016 dal menu della lista che era già previsto ma non collegato al metodo
+    private static void statistiche2016() {
+        newVersione(CROCE_ALGOS, 'Statistiche', 'Abilitata la visione dalla lista delle statistiche 2016')
+    }// fine del metodo
+
     def destroy = {
     }// fine della closur
 
