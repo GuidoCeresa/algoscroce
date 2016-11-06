@@ -20,7 +20,7 @@ class Funzione {
     //--elenco funzioni dipendenti da questa
     //--stringa separata da virgole, contenente un elenco delle sigle
     //--delle altre funzioni di questa croce collegate a questa funzione.
-    //--serve per abilitare automaticamente alle altre funzioni quando si sceglie questa funzione
+    //--serve per abilitare automaticamente alcune altre funzioni quando si sceglie questa funzione
     String funzioniDipendenti = ''
 
     // regolazione delle proprietà di ogni campo

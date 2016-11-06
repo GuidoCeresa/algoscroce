@@ -536,6 +536,11 @@ class BootStrap implements Cost {
             nuoviTurni2016Pontetaro()
         }// fine del blocco if
 
+        //--agganciato il 2016 dal menu della lista che era già previsto ma non collegato al metodo
+        if (installaVersione(95)) {
+            statistiche2016()
+        }// fine del blocco if
+
 
         // resetTurniPontetaro()
 
