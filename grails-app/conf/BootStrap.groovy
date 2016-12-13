@@ -541,6 +541,35 @@ class BootStrap implements Cost {
             statistiche2016()
         }// fine del blocco if
 
+        //--aggiornamento costante Cost.ANNI
+        if (installaVersione(96)) {
+            newVersione(CROCE_ALGOS, '2017', 'Aggiornamento costante Cost.ANNI')
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2017 per Demo
+        if (installaVersione(97)) {
+            nuoviTurni2017Demo()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2017 per Pianoro
+        if (installaVersione(98)) {
+            nuoviTurni2017Pianoro()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2017 per Fidenza
+        if (installaVersione(99)) {
+            nuoviTurni2017Fidenza()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2017 per Pontetaro
+        if (installaVersione(100)) {
+            nuoviTurni2017Pontetaro()
+        }// fine del blocco if
+
+        //--agganciato il 2017 dal menu della lista che era già previsto ma non collegato al metodo
+        if (installaVersione(101)) {
+            statistiche2017()
+        }// fine del blocco if
 
         // resetTurniPontetaro()
 
@@ -5312,7 +5341,6 @@ class BootStrap implements Cost {
         newVersione(CROCE_ROSSA_PONTETARO, 'Funzioni', 'Aggiunto secondo centralino')
     }// fine del metodo
 
-
     //--modifica accessi per la croce demo
     //--cancella ospite
     //--aggiunge cinque utenti
@@ -5356,7 +5384,6 @@ class BootStrap implements Cost {
             utente.save(flush: true)
             UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente)
         }// end of if cycle
-
 
         // admin
         milite = Milite.findByCroceAndCognome(croceDemo, "Rossi")
@@ -5405,7 +5432,6 @@ class BootStrap implements Cost {
         newVersione(CROCE_DEMO, 'Security', 'Aggiunti login per militi ed admin')
     }// fine del metodo
 
-
     //--creazione nuovi turni anno 2016 per Demo
     //--li crea SOLO se non esistono già
     private static void nuoviTurni2016Demo() {
@@ -5437,6 +5463,39 @@ class BootStrap implements Cost {
     //--agganciato il 2016 dal menu della lista che era già previsto ma non collegato al metodo
     private static void statistiche2016() {
         newVersione(CROCE_ALGOS, 'Statistiche', 'Abilitata la visione dalla lista delle statistiche 2016')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2017 per Demo
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2017Demo() {
+        nuoviTurniAnnualiDemo('2017')
+        newVersione(CROCE_DEMO, 'Turni', 'Creati turni vuoti 2017')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2017 per Pianoro
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2017Pianoro() {
+        nuoviTurniAnnualiPianoro('2017')
+        newVersione(CROCE_PUBBLICA_PIANORO, 'Turni', 'Creati turni vuoti 2017')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2017 per Fidenza
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2017Fidenza() {
+        nuoviTurniAnnualiFidenza('2017')
+        newVersione(CROCE_ROSSA_FIDENZA, 'Turni', 'Creati turni vuoti 2017')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2017 per Pontetaro
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2017Pontetaro() {
+        nuoviTurniAnnualiPontetaro('2017')
+        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Creati turni vuoti 2017')
+    }// fine del metodo
+
+    //--agganciato il 2017 dal menu della lista che era già previsto ma non collegato al metodo
+    private static void statistiche2017() {
+        newVersione(CROCE_ALGOS, 'Statistiche', 'Abilitata la visione dalla lista delle statistiche 2017')
     }// fine del metodo
 
     def destroy = {
