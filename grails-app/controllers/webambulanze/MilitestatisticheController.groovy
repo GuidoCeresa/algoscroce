@@ -30,7 +30,7 @@ class MilitestatisticheController {
     def croceService
     def utenteService
 
-    private static String ANNO_CORRENTE = '2016'
+    private static String ANNO_CORRENTE = '2017'
     private String anno = ANNO_CORRENTE
 
     def index() {
@@ -62,13 +62,18 @@ class MilitestatisticheController {
         redirect(action: 'list', params: params)
     } // fine del metodo
 
+    def anno2017() {
+        params.anno = '2017'
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
     def list(int max) {
         def lista = null
         Croce croce = croceService.getCroce(request)
         Milite milite
         ArrayList menuExtra
         HashMap mappa = new HashMap()
-        String titoloLista = "Turni effettuati dai militi nell'anno 2015"
+        String titoloLista = "Turni effettuati dai militi nell'anno 2017"
         mappa.put('titolo', 'nomignolo')
         mappa.put('campo', 'database')
 
