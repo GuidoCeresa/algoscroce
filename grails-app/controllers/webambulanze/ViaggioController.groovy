@@ -89,6 +89,7 @@ class ViaggioController {
             } else {
                 if (!params.sort) {
                     params.sort = 'giorno'
+                    params.order = 'desc'
                 }// fine del blocco if-else
                 lista = Viaggio.findAllByCroce(croce, params)
             }// fine del blocco if-else
@@ -182,7 +183,7 @@ class ViaggioController {
         if (croce) {
             params.siglaCroce = croce.sigla
             if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
-                lista = Viaggio.findAll("from Viaggio order by croce_id,giorno")
+                lista = Viaggio.findAll("from Viaggio order by croce_id, giorno")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
                 lista = Viaggio.findAllByAutomezzo(mezzo)
