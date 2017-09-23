@@ -87,10 +87,10 @@ class ViaggioController {
                 lista = Viaggio.findAll("from Viaggio order by croce_id,giorno")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
-                if (!params.sort) {
-                    params.sort = 'giorno'
-                    params.order = 'desc'
-                }// fine del blocco if-else
+                params.sort = 'giorno'
+                params.order = 'desc'
+                java.lang.Object obj = params;
+
                 lista = Viaggio.findAllByCroce(croce, params)
             }// fine del blocco if-else
         } else {

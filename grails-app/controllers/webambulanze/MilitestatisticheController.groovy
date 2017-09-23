@@ -30,7 +30,7 @@ class MilitestatisticheController {
     def croceService
     def utenteService
 
-    private static String ANNO_CORRENTE = '2015'
+    private static String ANNO_CORRENTE = '2017'
     private String anno = ANNO_CORRENTE
 
     def index() {
@@ -57,13 +57,23 @@ class MilitestatisticheController {
         redirect(action: 'list', params: params)
     } // fine del metodo
 
+    def anno2016() {
+        params.anno = '2016'
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def anno2017() {
+        params.anno = '2017'
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
     def list(int max) {
         def lista = null
         Croce croce = croceService.getCroce(request)
         Milite milite
         ArrayList menuExtra
         HashMap mappa = new HashMap()
-        String titoloLista = "Turni effettuati dai militi nell'anno 2015"
+        String titoloLista = "Turni effettuati dai militi nell'anno 2017"
         mappa.put('titolo', 'nomignolo')
         mappa.put('campo', 'database')
 
@@ -232,6 +242,64 @@ class MilitestatisticheController {
     def calcola2015() {
         Croce croce = croceService.getCroce(request)
         String anno = Cost.ANNI[3]
+        Date inizio
+        Date fine
+
+        if (croce) {
+            inizio = Lib.creaData1Gennaio(anno)
+            fine = Lib.creaDataOggi()
+            militeturnoService.calcola(croce, anno, inizio, fine)
+        }// fine del blocco if
+        utenteService.regolaAbilitazioni()
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def cancella2016() {
+        Croce croce = croceService.getCroce(request)
+        String anno = Cost.ANNI[4]
+        Date inizio
+        Date fine
+
+        if (croce) {
+            inizio = Lib.creaData1Gennaio(anno)
+            fine = Lib.creaData31Dicembre(anno)
+            militeturnoService.cancellaMiliteTurno(croce, inizio, fine)
+        }// fine del blocco if
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def calcola2016() {
+        Croce croce = croceService.getCroce(request)
+        String anno = Cost.ANNI[4]
+        Date inizio
+        Date fine
+
+        if (croce) {
+            inizio = Lib.creaData1Gennaio(anno)
+            fine = Lib.creaDataOggi()
+            militeturnoService.calcola(croce, anno, inizio, fine)
+        }// fine del blocco if
+        utenteService.regolaAbilitazioni()
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def cancella2017() {
+        Croce croce = croceService.getCroce(request)
+        String anno = Cost.ANNI[5]
+        Date inizio
+        Date fine
+
+        if (croce) {
+            inizio = Lib.creaData1Gennaio(anno)
+            fine = Lib.creaData31Dicembre(anno)
+            militeturnoService.cancellaMiliteTurno(croce, inizio, fine)
+        }// fine del blocco if
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def calcola2017() {
+        Croce croce = croceService.getCroce(request)
+        String anno = Cost.ANNI[5]
         Date inizio
         Date fine
 

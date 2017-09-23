@@ -1924,27 +1924,27 @@ class AmbulanzaTagLib {
                 descrizioneTurno = tipoTurno.descrizione
             }// fine del blocco if
 
-            testoOut += LibHtml.field(Field.testoLink, 'giorno', Lib.presentaDataCompleta(giorno), "turno/fillTurno?turnoId=${turnoId}")
-            testoOut += LibHtml.field(Field.testoLink, 'turno', descrizioneTurno, "turno/fillTurno?turnoId=${turnoId}")
-            testoOut += LibHtml.field(Field.testoLink, 'automezzo utilizzato', targaMezzo, "automezzo/show/${mezzoId}")
-            testoOut += LibHtml.field(Field.testoLink, 'chilometri alla partenza', chilometriPartenza, "automezzo/show/${mezzoId}")
-            testoOut += LibHtml.field(Field.testoObbEdit, "chilometri all'arrivo", '', 'chilometriArrivo')
+            testoOut += LibHtml.field(Field.txtLink, 'giorno', Lib.presentaDataCompleta(giorno), "turno/fillTurno?turnoId=${turnoId}")
+            testoOut += LibHtml.field(Field.txtLink, 'turno', descrizioneTurno, "turno/fillTurno?turnoId=${turnoId}")
+            testoOut += LibHtml.field(Field.txtLink, 'automezzo utilizzato', targaMezzo, "automezzo/show/${mezzoId}")
+            testoOut += LibHtml.field(Field.txtLink, 'chilometri alla partenza', chilometriPartenza, "automezzo/show/${mezzoId}")
+            testoOut += LibHtml.field(Field.txtObbEdit, "chilometri all'arrivo", '', 'chilometriArrivo')
             testoOut += LibHtml.field(Field.oraMin, "orario di chiamata", oggi, 'inizio')
             testoOut += LibHtml.fieldLista("codice invio", 'codiceInvio', listaInvio, CodiceInvio.get(), true)
             testoOut += LibHtml.fieldLista("luogo evento", 'luogoEvento', listaLuogo, LuogoEvento.get(), true)
             testoOut += LibHtml.fieldLista("patologia segnalata", 'patologia', listaPatologia, Patologia.get(), true)
             testoOut += LibHtml.fieldLista("codice ricovero", 'codiceRicovero', listaRicovero, CodiceRicovero.get(), true)
             testoOut += LibHtml.field(Field.oraMin, "orario di rientro", oggi, 'rientro')
-            testoOut += LibHtml.field(Field.testoObbEdit, "Cartellino 118", '', 'numeroCartellino')
+            testoOut += LibHtml.field(Field.txtObbEdit, "Cartellino 118", '', 'numeroCartellino')
             testoOut += LibHtml.field('nomePaziente')
             testoOut += LibHtml.field('indirizzoPaziente')
             testoOut += LibHtml.field('cittaPaziente')
             testoOut += LibHtml.field('etaPaziente')
             testoOut += LibHtml.field('prelievo')
             testoOut += LibHtml.field('ricovero')
-            testoOut += LibHtml.field(Field.testoObbEdit, 'numeroBolla')
-            testoOut += LibHtml.field(Field.testoObbEdit, 'numero servizio globale', numeroServiziEffettuati, 'numeroServizio')
-            testoOut += LibHtml.field(Field.testoObbEdit, 'numero viaggio del mezzo', numeroViaggio, 'numeroViaggio')
+            testoOut += LibHtml.field(Field.txtObbEdit, 'numeroBolla')
+            testoOut += LibHtml.field(Field.txtObbEdit, 'numero servizio globale', numeroServiziEffettuati, 'numeroServizio')
+            testoOut += LibHtml.field(Field.txtObbEdit, 'numero viaggio del mezzo', numeroViaggio, 'numeroViaggio')
             testoOut += listaMilitiFunzioni(turno, usaListaMilitiViaggi)
         }// fine del blocco if
 
@@ -2038,24 +2038,24 @@ class AmbulanzaTagLib {
 
         testoOut += LibHtml.field('Giorno', formDataGiornoEdit(giorno, 'giorno'))
         testoOut += LibHtml.fieldLista('Automezzo', 'automezzo', listaAutomezzi, automezzo.toString(), true)
-        testoOut += LibHtml.field(Field.testoObbEdit, 'Chilometri alla partenza', chilometriPartenza, 'chilometriPartenza')
-        testoOut += LibHtml.field(Field.testoObbEdit, "Chilometri all'arrivo", chilometriArrivo, 'chilometriArrivo')
+        testoOut += LibHtml.field(Field.txtObbEdit, 'Chilometri alla partenza', chilometriPartenza, 'chilometriPartenza')
+        testoOut += LibHtml.field(Field.txtObbEdit, "Chilometri all'arrivo", chilometriArrivo, 'chilometriArrivo')
         testoOut += LibHtml.field(Field.oraMin, "Orario di chiamata", inizio, 'inizio')
         testoOut += LibHtml.fieldLista("Codice invio", 'codiceInvio', listaInvio, codiceInvio.toString(), true)
         testoOut += LibHtml.fieldLista("Luogo evento", 'luogoEvento', listaLuogo, luogoEvento.toString(), true)
         testoOut += LibHtml.fieldLista("Patologia segnalata", 'patologia', listaPatologia, patologia.toString(), true)
         testoOut += LibHtml.fieldLista("Codice ricovero", 'codiceRicovero', listaRicovero, codiceRicovero.toString(), true)
         testoOut += LibHtml.field(Field.oraMin, "Orario di rientro", fine, 'rientro')
-        testoOut += LibHtml.field(Field.testoObbEdit, "Cartellino 118", numeroCartellino, 'numeroCartellino')
-        testoOut += LibHtml.field(Field.testoEdit, 'Nome del paziente', nomePaziente, 'nomePaziente')
-        testoOut += LibHtml.field(Field.testoEdit, 'Indirizzo del paziente', indirizzoPaziente, 'indirizzoPaziente')
-        testoOut += LibHtml.field(Field.testoEdit, 'Città del paziente', cittaPaziente, 'cittaPaziente')
-        testoOut += LibHtml.field(Field.testoEdit, 'Età del paziente', etaPaziente, 'etaPaziente')
-        testoOut += LibHtml.field(Field.testoEdit, 'Località prelievo', prelievo, 'prelievo')
-        testoOut += LibHtml.field(Field.testoEdit, 'Località ricovero', ricovero, 'ricovero')
-        testoOut += LibHtml.field(Field.testoObbEdit, 'Numero della bolla', numeroBolla, 'numeroBolla')
-        testoOut += LibHtml.field(Field.testoObbEdit, 'Numero del servizio', numeroServizio, 'numeroServizio')
-        testoOut += LibHtml.field(Field.testoObbEdit, 'Numero del viaggio', numeroViaggio, 'numeroViaggio')
+        testoOut += LibHtml.field(Field.txtObbEdit, "Cartellino 118", numeroCartellino, 'numeroCartellino')
+        testoOut += LibHtml.field(Field.txtEdit, 'Nome del paziente', nomePaziente, 'nomePaziente')
+        testoOut += LibHtml.field(Field.txtEdit, 'Indirizzo del paziente', indirizzoPaziente, 'indirizzoPaziente')
+        testoOut += LibHtml.field(Field.txtEdit, 'Città del paziente', cittaPaziente, 'cittaPaziente')
+        testoOut += LibHtml.field(Field.txtEdit, 'Età del paziente', etaPaziente, 'etaPaziente')
+        testoOut += LibHtml.field(Field.txtEdit, 'Località prelievo', prelievo, 'prelievo')
+        testoOut += LibHtml.field(Field.txtEdit, 'Località ricovero', ricovero, 'ricovero')
+        testoOut += LibHtml.field(Field.txtObbEdit, 'Numero della bolla', numeroBolla, 'numeroBolla')
+        testoOut += LibHtml.field(Field.txtObbEdit, 'Numero del servizio', numeroServizio, 'numeroServizio')
+        testoOut += LibHtml.field(Field.txtObbEdit, 'Numero del viaggio', numeroViaggio, 'numeroViaggio')
         testoOut += listaMilitiFunzioni(turno, listaMiliti)
 
         out << testoOut
@@ -2100,9 +2100,9 @@ class AmbulanzaTagLib {
             funz = getFunzione(turno, pos)
             if (funz) {
                 if (milite) {
-                    testoOut += LibHtml.field(Field.testo, funz.descrizione, milite.cognomeNome, "")
+                    testoOut += LibHtml.field(Field.txtEdit, funz.descrizione, milite.cognomeNome, "")
                 } else {
-                    testoOut += LibHtml.field(Field.testo, funz.descrizione, '...', "")
+                    testoOut += LibHtml.field(Field.txtEdit, funz.descrizione, '...', "")
                 }// fine del blocco if-else
             }// fine del blocco if
         }// fine del blocco if-else
