@@ -416,7 +416,7 @@ class LibAmbTime {
                 cal.setTime(data)
                 giornoSettimana = cal.get(Calendar.DAY_OF_WEEK)
                 if (giornoSettimana == 1) {
-                    giornoSettimana = 7
+                    giornoSettimana = 8
                 }// fine del blocco if
                 giornoSettimana--
                 if (corta) {

@@ -511,6 +511,28 @@ class BootStrap implements Cost {
             modificaSecurityDemo()
         }// fine del blocco if
 
+        //ATTENZIONE MANCANO I NUMERI DI VERSIONE DA 90 A 101 MENTRE LE VERSIONI ESISTONO
+        //USARE I NUMERI DA 102 IN SU
+        //--aggiornamento costante Cost.ANNI
+        if (installaVersione(102)) {
+            newVersione(CROCE_ALGOS, '2018', 'Aggiornamento costante Cost.ANNI')
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2018 per Pianoro
+        if (installaVersione(103)) {
+            nuoviTurni2018Pianoro()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2018 per Ponte Taro
+        if (installaVersione(104)) {
+            nuoviTurni2018CRPT()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2018 per Fidenza
+        if (installaVersione(105)) {
+            nuoviTurni2018Fidenza()
+        }// fine del blocco if
+
         // resetTurniPontetaro()
 
         //--cancella tutto il database
@@ -2458,6 +2480,7 @@ class BootStrap implements Cost {
         String nome
         String cognome
         String nick
+
         String password
 
         nome = milite.nome.trim()
@@ -2470,20 +2493,18 @@ class BootStrap implements Cost {
     //--crea una versione
     //--lo crea SOLO se non esiste già
     private static void newVersione(String siglaCroce, String titolo, String descrizione) {
-        int numero = getVersione() + 1
-        newVersione(siglaCroce, titolo, descrizione, numero)
+        newVersione(siglaCroce, titolo, descrizione, 0)
     }// fine del metodo
 
     //--crea una versione
     //--lo crea SOLO se non esiste già
     private static void newVersione(String siglaCroce, String titolo, String descrizione, int numero) {
         Versione versione
-        numero++
         Date giorno = new Date()
         Croce croce = Croce.findBySigla(siglaCroce)
 
         versione = new Versione()
-        versione.numero = numero
+        versione.numero = numero > 0 ? numero : getVersione() + 1;
         versione.croce = croce
         versione.giorno = giorno
         versione.titolo = titolo
@@ -4432,7 +4453,7 @@ class BootStrap implements Cost {
         TipoTurno msa2sera = TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_SABDOM_SERA)
 
 
-        for (int k = 0; k < 365; k++) {
+        for (int k = 31; k < 365; k++) {
             giorno = primoGennaio + k
             if (Lib.isFerialeAnno(giorno, Festivi.all(anno))) {
                 Lib.creaTurno(croce, msanotte, giorno)
@@ -5182,6 +5203,27 @@ class BootStrap implements Cost {
     private static void nuoviTurni2015Pontetaro() {
         nuoviTurniAnnualiPontetaro('2015')
         newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Creati turni vuoti 2015')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2018 per Pianoro
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2018Pianoro() {
+        nuoviTurniAnnualiPianoro('2018')
+        newVersione(CROCE_PUBBLICA_PIANORO, 'Turni', 'Creati turni vuoti 2018')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2018 per Ponte Taro
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2018CRPT() {
+        nuoviTurniAnnualiPontetaro('2018')
+        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Creati turni vuoti 2018')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2018 per Fidenza
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2018Fidenza() {
+        nuoviTurniAnnualiFidenza('2018')
+        newVersione(CROCE_ROSSA_FIDENZA, 'Turni', 'Creati turni vuoti 2018')
     }// fine del metodo
 
     //--aggiunto flag per creazione 'al volo' nuovi turni

@@ -135,7 +135,7 @@ grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'webambulanze.U
 grails.plugin.springsecurity.authority.className = 'webambulanze.Ruolo'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/'              : ['permitAll'],
-        '/secure/index'        : ['permitAll'],
+        '/secure/index'  : ['permitAll'],
         '/index'         : ['permitAll'],
         '/index.gsp'     : ['permitAll'],
         '/assets/**'     : ['permitAll'],
