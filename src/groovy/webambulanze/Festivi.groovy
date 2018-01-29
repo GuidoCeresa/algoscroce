@@ -8,19 +8,19 @@ package webambulanze
  */
 public enum Festivi {
 
-    capodanno(1, 1, 1, 1, 1, 1),
-    epifania(6, 6, 6, 6, 6, 6),
-    carnevale(65, 50, 41, 0, 46, 38),
-    pasqua(114, 99, 90, 110, 95, 87),
-    pasquetta(115, 100, 91, 111, 96, 88),
-    liberazione(115, 116, 115, 115, 115, 115),
-    lavoro(121, 122, 121, 121, 121, 121),
-    repubblica(153, 154, 153, 153, 153, 153),
-    ferragosto(227, 228, 227, 227, 227, 227),
-    ognissanti(305, 306, 305, 305, 305, 305),
-    immacolata(342, 343, 342, 342, 342, 342),
-    natale(359, 360, 359, 359, 359, 359),
-    stefano(360, 361, 360, 360, 360, 360)
+    capodanno(1, 1, 1, 1, 1, 1, 1),
+    epifania(6, 6, 6, 6, 6, 6, 6),
+    carnevale(65, 50, 41, 0, 46, 38, 57),
+    pasqua(114, 99, 90, 110, 95, 87, 106),
+    pasquetta(115, 100, 91, 111, 96, 88, 107),
+    liberazione(115, 116, 115, 115, 115, 115, 115),
+    lavoro(121, 122, 121, 121, 121, 121, 121),
+    repubblica(153, 154, 153, 153, 153, 153, 153),
+    ferragosto(227, 228, 227, 227, 227, 227, 227),
+    ognissanti(305, 306, 305, 305, 305, 305, 305),
+    immacolata(342, 343, 342, 342, 342, 342, 342),
+    natale(359, 360, 359, 359, 359, 359, 359),
+    stefano(360, 361, 360, 360, 360, 360, 360)
 
     private int anno11
     private int anno12
@@ -28,17 +28,19 @@ public enum Festivi {
     private int anno14
     private int anno15
     private int anno16
+    private int anno17
 
     /**
      * Costruttore con parametri.
      */
-    Festivi(int anno11, int anno12, int anno13, int anno14, int anno15, int anno16) {
+    Festivi(int anno11, int anno12, int anno13, int anno14, int anno15, int anno16, int anno17) {
         this.setAnno11(anno11)
         this.setAnno12(anno12)
         this.setAnno13(anno13)
         this.setAnno14(anno14)
         this.setAnno15(anno15)
         this.setAnno16(anno16)
+        this.setAnno17(anno17)
     }// fine del metodo costruttore
 
     //--restituisce tutti e solo i giorni festivi dell'anno
@@ -156,9 +158,28 @@ public enum Festivi {
     }// fine del metodo statico
 
     //--restituisce tutti e solo i giorni festivi dell'anno
+    static public ArrayList<Integer> all2017() {
+        ArrayList<Integer> giorni = new ArrayList<Integer>()
+        ArrayList<Festivi> festivi = values()
+        Festivi festivo
+        int numProgressivoGiorno
+
+        festivi.each {
+            festivo = it
+            numProgressivoGiorno = festivo.getAnno17()
+
+            if (numProgressivoGiorno > 0) {
+                giorni.add(numProgressivoGiorno)
+            }// fine del blocco if
+        } // fine del ciclo each
+
+        return giorni
+    }// fine del metodo statico
+
+    //--restituisce tutti e solo i giorni festivi dell'anno
     static public ArrayList<Integer> all(String anno) {
         ArrayList<Integer> giorni = new ArrayList<Integer>()
-        ArrayList anniValidi = ['2011', '2012', '2013', '2014', '2015', '2016']
+        ArrayList anniValidi = ['2011', '2012', '2013', '2014', '2015', '2016', '2017']
 
         if (anno && anno in anniValidi) {
             switch (anno) {
@@ -179,6 +200,9 @@ public enum Festivi {
                     break
                 case anniValidi[5]:
                     giorni = all2016()
+                    break
+                case anniValidi[6]:
+                    giorni = all2017()
                     break
                 default: // caso non definito
                     break
@@ -234,5 +258,13 @@ public enum Festivi {
 
     void setAnno16(int anno16) {
         this.anno16 = anno16
+    }
+
+    int getAnno17() {
+        return anno17
+    }
+
+    void setAnno17(int anno17) {
+        this.anno17 = anno17
     }
 } // fine della classe

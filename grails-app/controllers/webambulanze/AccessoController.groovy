@@ -1,7 +1,12 @@
 package webambulanze
 
 import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.context.ApplicationContext
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserCache
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
 
 import javax.servlet.http.Cookie
 
@@ -80,6 +85,10 @@ class AccessoController {
             isTabelloneSecured = croceService.isTabelloneSecured(siglaCroce)
         }// fine del blocco if
 
+        if (siglaCroce.equals(Cost.CROCE_DEMO)) {
+            //--deve esserci un utente (altrimenti non dovrebbe arrivare qui, ma per sicurezza...)
+        }// fine del blocco if
+
         if (primaVolta) {
             redirect(url: '/' + siglaCroce)
         } else {
@@ -96,6 +105,19 @@ class AccessoController {
             }// fine del blocco if-else
         }// fine del blocco if-else
     } // fine del metodo
+
+//    public  void reauthenticate() {
+//        final String username = 'ospite'
+//        final String password = 'ospite'
+//        ApplicationContext ctx = grailsApplication.mainContext
+//        UserDetailsService userDetailsService = ctx.getBean("userDetailsService");
+//        UserCache userCache = ctx.getBean("userCache");
+//
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+//        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+//                userDetails, password == null ? userDetails.getPassword() : password, userDetails.getAuthorities()));
+//        userCache.removeUserFromCache(username);
+//    }
 
     def selezionaLogin = {
 //        Croce croce
