@@ -62,7 +62,7 @@ class LoginController {
 
         if (croce) {
             params.siglaCroce = croce.sigla
-            listaGrezza = Utente.findAllByCroceAndAccountExpired(croce, false, [sort: 'username'])
+            listaGrezza = Utente.findAllByCroceAndEnabled(croce, true, [sort: 'username'])
         } else {
             //   listaGrezza = Utente.findAll([sort: 'username'])
         }// fine del blocco if-else
