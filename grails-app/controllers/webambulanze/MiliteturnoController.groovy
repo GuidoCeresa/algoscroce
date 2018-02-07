@@ -209,4 +209,25 @@ class MiliteturnoController {
         }
     } // fine del metodo
 
+
+    public static int deleteLink(Milite milite) {
+        int status = 0 //indeterminato
+        def listaTurniDelMilite = Militeturno.findAllByMilite(milite)
+
+        if (listaTurniDelMilite.isEmpty()) {
+            status = 1 //non esiste
+        } else {
+            status = 2 //non riesco a cancellarlo
+            for (Militeturno militeturno : listaTurniDelMilite) {
+                try {
+                    militeturno.delete(flush: true)
+                    status = 3 //cancellato
+                } catch (DataIntegrityViolationException e) {
+                }// fine del blocco try-catch
+            }// end of for cycle
+        }// end of if/else cycle
+
+        return status
+    } // fine del metodo
+
 } // fine della controller classe

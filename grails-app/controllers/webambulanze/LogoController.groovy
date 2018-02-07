@@ -172,4 +172,35 @@ class LogoController {
         }
     } // fine del metodo
 
+
+    public static int deleteLink(Milite milite) {
+        int status = 0 //indeterminato
+        def listaLogoDelMilite = Logo.findAllByMilite(milite)
+        Utente utente = Utente.findByMilite(milite)
+        def listaLogoDiUtente = Logo.findAllByUtente(utente)
+
+        if (listaLogoDelMilite.isEmpty() && listaLogoDiUtente.isEmpty()) {
+            status = 1 //non esiste
+        } else {
+            status = 2 //non riesco a cancellarlo
+            for (Logo logo : listaLogoDelMilite) {
+                try {
+                    logo.delete(flush: true)
+                    status = 3 //cancellato
+                } catch (DataIntegrityViolationException e) {
+                }// fine del blocco try-catch
+            }// end of for cycle
+            for (Logo logo : listaLogoDiUtente) {
+                try {
+                    logo.delete(flush: true)
+                    status = 3 //cancellato
+                } catch (DataIntegrityViolationException e) {
+                }// fine del blocco try-catch
+            }// end of for cycle
+        }// end of if/else cycle
+
+        return status
+    } // fine del metodo
+
+
 } // fine della controller classe

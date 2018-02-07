@@ -731,4 +731,66 @@ class ViaggioController {
         }
     } // fine del metodo
 
+
+    public static int deleteLink(Milite milite) {
+        int status = 0 //indeterminato
+        def listaViaggiMiliteFunzione1 = Viaggio.findAllByMiliteFunzione1(milite)
+        def listaViaggiMiliteFunzione2 = Viaggio.findAllByMiliteFunzione2(milite)
+        def listaViaggiMiliteFunzione3 = Viaggio.findAllByMiliteFunzione3(milite)
+        def listaViaggiMiliteFunzione4 = Viaggio.findAllByMiliteFunzione4(milite)
+
+        if (listaViaggiMiliteFunzione1.isEmpty()
+                && listaViaggiMiliteFunzione2.isEmpty()
+                && listaViaggiMiliteFunzione3.isEmpty()
+                && listaViaggiMiliteFunzione4.isEmpty()) {
+            status = 1 //non esiste
+        } else {
+            status = 2 //non riesco a cancellarlo
+            if (listaViaggiMiliteFunzione1 != null) {
+                for (Viaggio viaggio : listaViaggiMiliteFunzione1) {
+                    viaggio.militeFunzione1 = null;
+                    try { // prova ad eseguire il codice
+                        viaggio.save(flush: true)
+                        status = 3 //eliminato riferimento
+                    } catch (Exception unErrore) { // intercetta l'errore
+                    }// fine del blocco try-catch
+                }// end of for cycle
+            }// end of if cycle
+            if (listaViaggiMiliteFunzione2 != null) {
+                for (Viaggio viaggio : listaViaggiMiliteFunzione2) {
+                    viaggio.militeFunzione2 = null;
+                    try { // prova ad eseguire il codice
+                        viaggio.save(flush: true)
+                        status = 3 //eliminato riferimento
+                    } catch (Exception unErrore) { // intercetta l'errore
+                    }// fine del blocco try-catch
+                }// end of for cycle
+            }// end of if cycle
+            if (listaViaggiMiliteFunzione3 != null) {
+                for (Viaggio viaggio : listaViaggiMiliteFunzione3) {
+                    viaggio.militeFunzione3 = null;
+                    try { // prova ad eseguire il codice
+                        viaggio.save(flush: true)
+                        status = 3 //eliminato riferimento
+                    } catch (Exception unErrore) { // intercetta l'errore
+                    }// fine del blocco try-catch
+                }// end of for cycle
+            }// end of if cycle
+            if (listaViaggiMiliteFunzione4 != null) {
+                for (Viaggio viaggio : listaViaggiMiliteFunzione4) {
+                    viaggio.militeFunzione4 = null;
+                    try { // prova ad eseguire il codice
+                        viaggio.save(flush: true)
+                        status = 3 //eliminato riferimento
+                    } catch (Exception unErrore) { // intercetta l'errore
+                    }// fine del blocco try-catch
+                }// end of for cycle
+            }// end of if cycle
+
+        }// end of if/else cycle
+
+        return status
+    } // fine del metodo
+
+
 } // fine della controller classe

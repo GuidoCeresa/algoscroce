@@ -47,29 +47,46 @@ class UtenteService {
 
     //--recupera i nomi di tutti gli utenti ESCLUSO il programatore
     public ArrayList tuttiUtentiRuoloDellaCroceSenzaProgrammatore(Croce croce) {
+        ArrayList lista = new ArrayList()
         ArrayList listaCompletaTutteLeCroci = null
-        ArrayList lista = null
+        ArrayList listaTmp = new ArrayList()
+        LinkedHashMap mappa = new LinkedHashMap()
         Ruolo ruoloProg = Ruolo.findByAuthority(Cost.ROLE_PROG)
         UtenteRuolo utenteRuolo
         Utente utente
         Croce croceUtente
+        long ruolo
 
         if (ruoloProg) {
-            def a=    UtenteRuolo.findAll()
+            def a = UtenteRuolo.findAll()
 
             listaCompletaTutteLeCroci = UtenteRuolo.findAllByRuoloNotEqual(ruoloProg)
             if (listaCompletaTutteLeCroci) {
-                lista = new ArrayList()
+                listaTmp = new ArrayList()
                 listaCompletaTutteLeCroci.each {
                     utenteRuolo = (UtenteRuolo) it
                     utente = utenteRuolo.utente
+                    ruolo = utenteRuolo.ruolo.id
                     croceUtente = utente.croce
                     if (croceUtente == croce) {
-                        lista.add(utenteRuolo)
+                        if (utente.nickname) {
+                            if (ruolo == 4) {
+                                mappa.put(utente.nickname, utenteRuolo)
+                            } else {
+                                lista.add(utenteRuolo)
+                            }// end of if/else cycle
+                        }// end of if cycle
                     }// fine del blocco if
                 } // fine del ciclo each
             }// fine del blocco if
         }// fine del blocco if
+
+
+        if (mappa) {
+            mappa.keySet().sort().each {
+                lista.add(mappa.get(it))
+            } // fine del ciclo each
+        }// end of if cycle
 
         return lista
     }// fine del metodo

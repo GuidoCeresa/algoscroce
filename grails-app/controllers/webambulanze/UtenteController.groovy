@@ -203,8 +203,7 @@ class UtenteController {
                 def listaLogo = Logo.findAllByUtente(utenteInstance)
                 listaLogo?.each {
                     logo = (Logo) it
-                    logo.utente = null
-                    logo.save(flush: true)
+                    logo.delete(flush: true)
                 } // fine del ciclo each
 
 //                String query = "delete utente_ruolo where utente_id=" + utenteInstance.id
@@ -224,6 +223,25 @@ class UtenteController {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'utente.label', default: 'Utente'), id])
             redirect(action: 'show', id: id)
         }
+    } // fine del metodo
+
+
+    public static int deleteLink(Milite milite) {
+        int status = 0 //indeterminato
+        Utente istanza = Utente.findByMilite(milite)
+
+        if (istanza == null) {
+            status = 1 //non esiste
+        } else {
+            status = 2 //non riesco a cancellarlo
+            try {
+                istanza.delete(flush: true)
+                status = 3 //cancellato
+            } catch (DataIntegrityViolationException e) {
+            }// fine del blocco try-catch
+        }// end of if/else cycle
+
+        return status
     } // fine del metodo
 
 } // fine della controller classe

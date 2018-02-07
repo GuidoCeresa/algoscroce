@@ -39,7 +39,7 @@ class UtenteRuoloController {
                 'ruolo']
 
         if (!params.sort) {
-            params.sort = 'utente'
+            params.sort = 'ruolo+utente'
         }// fine del blocco if-else
 
         if (croce) {
@@ -159,6 +159,48 @@ class UtenteRuoloController {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'utenteRuolo.label', default: 'UtenteRuolo'), id])
             redirect(action: "show", id: id)
         }
+    } // fine del metodo
+
+    public static int deleteLink(Milite milite) {
+        int status = 0 //indeterminato
+        Utente istanza = Utente.findByMilite(milite)
+        if (istanza == null) {
+            return 1
+        }// end of if cycle
+
+        long idUtente = istanza.id
+        UtenteRuolo istanzaCustode = UtenteRuolo.get(idUtente, 2)
+        UtenteRuolo istanzaAdmin = UtenteRuolo.get(idUtente, 3)
+        UtenteRuolo istanzaMilite = UtenteRuolo.get(idUtente, 4)
+
+        if (istanzaCustode == null && istanzaAdmin == null && istanzaMilite == null) {
+            status = 1 //non esiste
+        } else {
+            status = 2 //non riesco a cancellarlo
+            if (istanzaCustode != null) {
+                try {
+                    istanzaCustode.delete(flush: true)
+                    status = 3 //cancellato
+                } catch (DataIntegrityViolationException e) {
+                }// fine del blocco try-catch
+            }// end of if cycle
+            if (istanzaAdmin != null) {
+                try {
+                    istanzaAdmin.delete(flush: true)
+                    status = 3 //cancellato
+                } catch (DataIntegrityViolationException e) {
+                }// fine del blocco try-catch
+            }// end of if cycle
+            if (istanzaMilite != null) {
+                try {
+                    istanzaMilite.delete(flush: true)
+                    status = 3 //cancellato
+                } catch (DataIntegrityViolationException e) {
+                }// fine del blocco try-catch
+            }// end of if cycle
+        }// end of if/else cycle
+
+        return status
     } // fine del metodo
 
     private static UtenteRuolo recuperaIstanza(long id) {

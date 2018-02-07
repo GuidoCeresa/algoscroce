@@ -73,10 +73,10 @@ class MiliteController {
         }// fine del blocco if-else
 
         render(view: 'militeturno', model: [
-                militeInstanceList: lista,
+                militeInstanceList : lista,
                 militeInstanceTotal: 0,
-                campiLista: campiLista,
-                campiExtra: campiExtra],
+                campiLista         : campiLista,
+                campiExtra         : campiExtra],
                 params: params)
     } // fine del metodo
 
@@ -127,10 +127,10 @@ class MiliteController {
         }// fine del blocco if-else
 
         render(view: 'list', model: [
-                militeInstanceList: lista,
+                militeInstanceList : lista,
                 militeInstanceTotal: 0,
-                campiLista: campiLista,
-                campiExtra: campiExtra],
+                campiLista         : campiLista,
+                campiExtra         : campiExtra],
                 params: params)
     } // fine del metodo
 
@@ -266,6 +266,9 @@ class MiliteController {
     @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def militeInstance = Milite.get(id)
+        int status
+        flash.listaMessaggi = new ArrayList()
+        flash.listaErrori = new ArrayList()
 
         if (!militeInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'milite.label', default: 'Milite'), id])
@@ -273,16 +276,171 @@ class MiliteController {
             return
         }// fine del blocco if
 
+        String milite = militeInstance.toString();
         try {
+            status = ViaggioController.deleteLink(militeInstance)
+            switch (status) {
+                case 0:
+                    flash.listaErrori.add('Qualcosa non ha funzionato')
+                    break;
+                case 1:
+                    flash.listaMessaggi.add('Al momento ' + milite + ' non ha effettuato nessun viaggio registrato nei viaggi')
+                    break;
+                case 2:
+                    flash.listaErrori.add('Non riesco a cancellare ' + milite + ' Prova a controllare i viaggi')
+                    break;
+                case 3:
+                    flash.listaMessaggi.add('Eliminati tutti i riferimenti di ' + milite + ' nei viaggi registrati')
+                    break;
+                default:
+                    log.warn("Switch - caso non definito");
+                    break;
+            } // end of switch statement
+
+
+            status = LogoController.deleteLink(militeInstance)
+            switch (status) {
+                case 0:
+                    flash.listaErrori.add('Qualcosa non ha funzionato')
+                    break;
+                case 1:
+                    flash.listaMessaggi.add('Al momento ' + milite + ' non ha nessun log')
+                    break;
+                case 2:
+                    flash.listaErrori.add('Non riesco a cancellare ' + milite + ' Prova a controllare i logs')
+                    break;
+                case 3:
+                    flash.listaMessaggi.add('Eliminati tutti i log di ' + milite)
+                    break;
+                default:
+                    log.warn("Switch - caso non definito");
+                    break;
+            } // end of switch statement
+
+            status = UtenteRuoloController.deleteLink(militeInstance)
+            switch (status) {
+                case 0:
+                    flash.listaErrori.add('Qualcosa non ha funzionato')
+                    break;
+                case 1:
+                    flash.listaMessaggi.add('Al momento ' + milite + ' non ha ruoli attivi')
+                    break;
+                case 2:
+                    flash.listaErrori.add('Non riesco a cancellare ' + milite + ' Prova a controllare la tabella utente/ruolo')
+                    break;
+                case 3:
+                    flash.listaMessaggi.add('Eliminato il ruolo di ' + milite)
+                    break;
+                default:
+                    log.warn("Switch - caso non definito");
+                    break;
+            } // end of switch statement
+
+            status = TurnoController.deleteLink(militeInstance)
+            switch (status) {
+                case 0:
+                    flash.listaErrori.add('Qualcosa non ha funzionato')
+                    break;
+                case 1:
+                    flash.listaMessaggi.add('Al momento ' + milite + ' non ha partecipato a nessun turno')
+                    break;
+                case 2:
+                    flash.listaErrori.add('Non riesco a cancellare ' + milite + ' Prova a controllare i turni')
+                    break;
+                case 3:
+                    flash.listaMessaggi.add('Eliminata la partecipazione di ' + milite + ' ai turni')
+                    break;
+                default:
+                    log.warn("Switch - caso non definito");
+                    break;
+            } // end of switch statement
+
+
+            status = MiliteturnoController.deleteLink(militeInstance)
+            switch (status) {
+                case 0:
+                    flash.listaErrori.add('Qualcosa non ha funzionato')
+                    break;
+                case 1:
+                    flash.listaMessaggi.add('Al momento ' + milite + ' non è presente nelle statistiche militeturno')
+                    break;
+                case 2:
+                    flash.listaErrori.add('Non riesco a cancellare ' + milite + ' Prova a controllare le statistiche militeturno')
+                    break;
+                case 3:
+                    flash.listaMessaggi.add('Eliminato ' + milite + ' dalle statistiche militeturno')
+                    break;
+                default:
+                    log.warn("Switch - caso non definito");
+                    break;
+            } // end of switch statement
+
+            status = MilitestatisticheController.deleteLink(militeInstance)
+            switch (status) {
+                case 0:
+                    flash.listaErrori.add('Qualcosa non ha funzionato')
+                    break;
+                case 1:
+                    flash.listaMessaggi.add('Al momento ' + milite + ' non è presente nelle statistiche')
+                    break;
+                case 2:
+                    flash.listaErrori.add('Non riesco a cancellare ' + milite + ' Prova a controllare le statistiche')
+                    break;
+                case 3:
+                    flash.listaMessaggi.add('Eliminato ' + milite + ' dalle statistiche')
+                    break;
+                default:
+                    log.warn("Switch - caso non definito");
+                    break;
+            } // end of switch statement
+
+            status = MilitefunzioneController.deleteLink(militeInstance)
+            switch (status) {
+                case 0:
+                    flash.listaErrori.add('Qualcosa non ha funzionato')
+                    break;
+                case 1:
+                    flash.listaMessaggi.add('Al momento ' + milite + ' non è presente nella tabella delle funzioni di ogni milite')
+                    break;
+                case 2:
+                    flash.listaErrori.add('Non riesco a cancellare ' + milite + ' Prova a controllare la tabella delle funzioni di ogni milite')
+                    break;
+                case 3:
+                    flash.listaMessaggi.add('Eliminate le funzioni abilitate di ' + milite)
+                    break;
+                default:
+                    log.warn("Switch - caso non definito");
+                    break;
+            } // end of switch statement
+
+            status = UtenteController.deleteLink(militeInstance)
+            switch (status) {
+                case 0:
+                    flash.listaErrori.add('Qualcosa non ha funzionato')
+                    break;
+                case 1:
+                    flash.listaMessaggi.add('Al momento ' + milite + ' non è presente nella lista utenti/password')
+                    break;
+                case 2:
+                    flash.listaErrori.add('Non riesco a cancellare ' + milite + ' Prova a controllare la lista utenti/password')
+                    break;
+                case 3:
+                    flash.listaMessaggi.add('Eliminateo ' + milite + ' dalla lista utenti/password')
+                    break;
+                default:
+                    log.warn("Switch - caso non definito");
+                    break;
+            } // end of switch statement
+
             militeInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'milite.label', default: 'Milite'), id])
-            redirect(action: 'list')
-        }
-        catch (DataIntegrityViolationException e) {
+            flash.listaMessaggi.add('Eliminateo ' + milite + ' da tutte le liste')
+            // flash.message = message(code: 'default.deleted.message', args: [message(code: 'milite.label', default: 'Milite'), id])
+
+        } catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'milite.label', default: 'Milite'), id])
-            redirect(action: 'list')
-//            redirect(action: 'show', id: id)
-        }
+        }// fine del blocco try-catch
+
+        redirect(action: 'list')
     } // fine del metodo
 
 } // fine della controller classe

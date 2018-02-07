@@ -20,6 +20,11 @@ class MilitefunzioneController {
     // il service viene iniettato automaticamente
     def croceService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def militefunzioneService
+
+
     def index() {
         redirect(action: 'list', params: params)
     } // fine del metodo
@@ -50,7 +55,7 @@ class MilitefunzioneController {
                 if (!params.sort) {
                     params.sort = 'id'
                 }// fine del blocco if-else
-                lista = Militefunzione.findAllByCroce(croce, params)
+                lista = militefunzioneService.tuttiMilitiiDellaCroceSenzaProgrammatore(croce)
             }// fine del blocco if-else
         } else {
             lista = Militefunzione.findAll(params)
@@ -71,8 +76,8 @@ class MilitefunzioneController {
         }// fine del blocco if
 
         render(view: 'create', model: [
-                listaMiliti: listaMiliti,
-                listaFunzioni: listaFunzioni,
+                listaMiliti           : listaMiliti,
+                listaFunzioni         : listaFunzioni,
                 militefunzioneInstance: new Militefunzione(params)
         ], params: params)
     } // fine del metodo
@@ -129,8 +134,8 @@ class MilitefunzioneController {
 
         params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'edit', model: [
-                listaMiliti: listaMiliti,
-                listaFunzioni: listaFunzioni,
+                listaMiliti           : listaMiliti,
+                listaFunzioni         : listaFunzioni,
                 militefunzioneInstance: militefunzioneInstance
         ], params: params)
     } // fine del metodo
@@ -184,6 +189,27 @@ class MilitefunzioneController {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'militefunzione.label', default: 'Militefunzione'), id])
             redirect(action: 'show', id: id)
         }
+    } // fine del metodo
+
+
+    public static int deleteLink(Milite milite) {
+        int status = 0 //indeterminato
+        def listaFunzioni = Militefunzione.findAllByMilite(milite)
+
+        if (listaFunzioni.isEmpty()) {
+            status = 1 //non esiste
+        } else {
+            status = 2 //non riesco a cancellarlo
+            for (Militefunzione istanza : listaFunzioni) {
+                try {
+                    istanza.delete(flush: true)
+                    status = 3 //cancellato
+                } catch (DataIntegrityViolationException e) {
+                }// fine del blocco try-catch
+            }// end of for cycle
+        }// end of if/else cycle
+
+        return status
     } // fine del metodo
 
 } // fine della controller classe

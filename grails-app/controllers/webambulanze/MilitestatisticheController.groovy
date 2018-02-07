@@ -422,4 +422,24 @@ class MilitestatisticheController {
         }
     } // fine del metodo
 
+    public static int deleteLink(Milite milite) {
+        int status = 0 //indeterminato
+        def listaStatistiche  = Militestatistiche.findAllByMilite(milite)
+
+        if (listaStatistiche.isEmpty()) {
+            status = 1 //non esiste
+        } else {
+            status = 2 //non riesco a cancellarlo
+            for (Militestatistiche istanza : listaStatistiche) {
+                try {
+                    istanza.delete(flush: true)
+                    status = 3 //cancellato
+                } catch (DataIntegrityViolationException e) {
+                }// fine del blocco try-catch
+            }// end of for cycle
+        }// end of if/else cycle
+
+        return status
+    } // fine del metodo
+
 } // fine della controller classe

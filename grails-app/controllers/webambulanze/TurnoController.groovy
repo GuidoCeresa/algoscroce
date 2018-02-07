@@ -1267,4 +1267,67 @@ class TurnoController {
         }// fine del blocco if
     } // fine del metodo
 
+
+
+    public static int deleteLink(Milite milite) {
+        int status = 0 //indeterminato
+        def listaTurniiMiliteFunzione1 = Turno.findAllByMiliteFunzione1(milite)
+        def listaTurniiMiliteFunzione2 = Turno.findAllByMiliteFunzione2(milite)
+        def listaTurniiMiliteFunzione3 = Turno.findAllByMiliteFunzione3(milite)
+        def listaTurniiMiliteFunzione4 = Turno.findAllByMiliteFunzione4(milite)
+
+        if (listaTurniiMiliteFunzione1.isEmpty()
+                && listaTurniiMiliteFunzione2.isEmpty()
+                && listaTurniiMiliteFunzione3.isEmpty()
+                && listaTurniiMiliteFunzione4.isEmpty()) {
+            status = 1 //non esiste
+        } else {
+            status = 2 //non riesco a cancellarlo
+            if (listaTurniiMiliteFunzione1 != null) {
+                for (Turno turno : listaTurniiMiliteFunzione1) {
+                    turno.militeFunzione1 = null;
+                    try { // prova ad eseguire il codice
+                        turno.save(flush: true)
+                        status = 3 //eliminato riferimento
+                    } catch (Exception unErrore) { // intercetta l'errore
+                    }// fine del blocco try-catch
+                }// end of for cycle
+            }// end of if cycle
+            if (listaTurniiMiliteFunzione2 != null) {
+                for (Turno turno : listaTurniiMiliteFunzione2) {
+                    turno.militeFunzione2 = null;
+                    try { // prova ad eseguire il codice
+                        turno.save(flush: true)
+                        status = 3 //eliminato riferimento
+                    } catch (Exception unErrore) { // intercetta l'errore
+                    }// fine del blocco try-catch
+                }// end of for cycle
+            }// end of if cycle
+            if (listaTurniiMiliteFunzione3 != null) {
+                for (Turno turno : listaTurniiMiliteFunzione3) {
+                    turno.militeFunzione3 = null;
+                    try { // prova ad eseguire il codice
+                        turno.save(flush: true)
+                        status = 3 //eliminato riferimento
+                    } catch (Exception unErrore) { // intercetta l'errore
+                    }// fine del blocco try-catch
+                }// end of for cycle
+            }// end of if cycle
+            if (listaTurniiMiliteFunzione4 != null) {
+                for (Turno turno : listaTurniiMiliteFunzione4) {
+                    turno.militeFunzione4 = null;
+                    try { // prova ad eseguire il codice
+                        turno.save(flush: true)
+                        status = 3 //eliminato riferimento
+                    } catch (Exception unErrore) { // intercetta l'errore
+                    }// fine del blocco try-catch
+                }// end of for cycle
+            }// end of if cycle
+        }// end of if/else cycle
+
+        return status
+    } // fine del metodo
+
+
+
 } // fine della controller classe
