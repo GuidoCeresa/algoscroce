@@ -1740,7 +1740,8 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - 5.23 del 19 settembre 2017'
 //        testo = 'Algos© - 5.24 del 24 settembre 2017'
 //        testo = 'Algos© - 5.25 del 22 dicembre 2017'
-        testo = 'Algos© - 5.26 del 29 gennaio 2018'
+//        testo = 'Algos© - 5.26 del 29 gennaio 2018'
+        testo = 'Algos© - 5.27 del 7 febbraio 2018'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
